@@ -1,0 +1,16 @@
+{% for result in unfinishedResults %}
+  <tr>
+    <td>{{ result.sailNumber }}</td>
+    <td>{{ result.helm }}</td>
+    <td>
+      {% if result.crew|length > 0 %}
+        {{ result.crew }}
+      {%else %}
+        No Crew
+      {% endif %}
+    </td>
+    <td>{{ result.boatClassName }}</td>
+    <td>{{ result.unfinishedTypeHandle }}</td>
+    <td>{{ result.unfinishedTypeHandle }}</td>
+  </tr>
+{% endfor %}

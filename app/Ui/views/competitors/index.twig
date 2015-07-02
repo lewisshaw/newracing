@@ -1,0 +1,32 @@
+{% extends "layout/main.twig" %}
+{% block breadcrumb %}
+  {{ parent() }}
+  <li class="active">competitors</li>
+{% endblock %}
+{% block content %}
+  <h1>Competitors</h1>
+  <p class="important">
+    Manager competitor details.
+  </p>
+  {% include "partials/errors.twig" %}
+  {% include "partials/message.twig" %}
+  {% include "competitors/insert-update.twig" %}
+
+  <h2>Current Competitors</h2>
+  <table class="table">
+    <thead>
+      <tr>
+        <th>First Name</th><th>Last Name</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for competitor in competitors %}
+        <tr>
+          <td>{{ competitor.firstName }}</td>
+          <td>{{ competitor.lastName }}</td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+
+{% endblock %}

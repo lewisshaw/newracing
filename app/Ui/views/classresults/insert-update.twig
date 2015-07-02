@@ -1,0 +1,42 @@
+<div class="row">
+  <form method="post" class="form">
+    <div class="col-md-6">
+      <div class="form-group">
+        <label for="boat-class">Class</label>
+        <select class="form-control" name="boat_class_id" id="boat-class">
+          {% for boatClass in boatClasses %}
+            <option value="{{ boatClass.boatClassId }}">{{ boatClass.name }}</option>
+          {% endfor %}
+        </select>
+      </div>
+      <div class="form-group">
+        <label for="sail-number">Sail Number</label>
+        <input type="text" name="sail_number" class="form-control" id="sail-number" placeholder="">
+      </div>
+      <div class="form-group">
+        <label for="result-position">Position</label>
+          <input type="text" name="result_position" class="form-control" id="result-position" placeholder="">
+      </div>
+    </div>
+    <div class="col-md-6">
+      <div class="form-group">
+        <label for="result-helm">Helm</label>
+        <select class="form-control" name="result_helm" id="result-helm">
+          {% for competitor in competitors %}
+            <option value="{{ competitor.competitorId }}">{{ competitor.firstName }} {{ competitor.lastName }}</option>
+          {% endfor %}
+        </select>
+      </div>
+      <div class="form-group">
+        <label for="result-crew">Crew</label>
+        <select class="form-control" name="result_crew" id="result-crew">
+          <option value="">No Crew</option>
+          {% for competitor in competitors %}
+            <option value="{{ competitor.competitorId }}">{{ competitor.firstName }} {{ competitor.lastName }}</option>
+          {% endfor %}
+        </select>
+      </div>
+      <button type="submit" class="btn btn-default pull-right">Add Result</button>
+    </div>
+  </form>
+</div>

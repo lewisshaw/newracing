@@ -1,0 +1,27 @@
+{% extends "layout/main.twig" %}
+{% block breadcrumb %}
+  {{ parent() }}
+  <li><a href="/admin/boatclasses">classes</a></li>
+  <li class="active">PY Numbers</li>
+{% endblock %}
+{% block content %}
+  <!-- TODO Show class name here -->
+  <h1>PY Numbers - {{ boatClass.name }}</h1>
+  <p class="important">
+    Manage PY numbers.
+  </p>
+  {% include "partials/errors.twig" %}
+  {% include "partials/message.twig" %}
+  {% include "pynumbers/insert-update.twig" %}
+
+  <h2>Active PY Number</h2>
+    {% if activePyNumber != false %}
+      {{ activePyNumber.pyNumber }}
+    {% else %}
+      There is currently no active PY Number
+    {% endif %}
+  <h2>Previous PY Numbers</h2>
+  {% for pyNumber in legacyPyNumbers %}
+    {{ pyNumber.pyNumber }}<br />
+  {% endfor %}
+{% endblock %}

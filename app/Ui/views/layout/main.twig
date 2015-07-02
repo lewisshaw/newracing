@@ -1,0 +1,58 @@
+<html>
+<head>
+<title>{{ title }}</title>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.4.0/css/bootstrap-datepicker.min.css">
+</head>
+
+<body>
+  <nav class="navbar navbar-default">
+    <div class="container">
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+          <span class="sr-only">Toggle navigation</span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="">Racing Results</a>
+      </div>
+      <div id="navbar" class="collapse navbar-collapse">
+        <ul class="nav navbar-nav">
+          <li class ="{% if isSeriesActive is defined %}active{% endif %}"><a href="/admin/series">Series</a></li>
+          <li class ="{% if isCompetitorsActive is defined %}active{% endif %}"><a href="/admin/competitors">Competitors</a></li>
+          <li class ="{% if isClassesActive is defined %}active{% endif %}"><a href="/admin/boatclasses">Classes</a></li>
+          <li class ="{% if isFilesActive is defined %}active{% endif %}"><a href="/admin/files">Files</a></li>
+        </ul>
+        <ul class="nav navbar-nav navbar-right">
+          <li>
+            {% if user is defined %}
+              {% include 'partials/user.twig' %}
+            {% else %}
+              {% include 'partials/login.twig' %}
+            {% endif %}
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+    <div class="container">
+      <ol class="breadcrumb">
+        {% block breadcrumb %}
+          <li><a href='/admin'>admin</a></li>
+        {% endblock %}
+      </ol>
+      <div class="starter-template">
+        {% block content %}{% endblock %}
+      </div>
+
+    </div>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.4.0/js/bootstrap-datepicker.min.js"></script>
+    <script src="../../assets/js/ie10-viewport-bug-workaround.js"></script>
+    {%block scripts %}{% endblock %}
+</body>
+</html>

@@ -1,0 +1,39 @@
+{% extends "layout/main.twig" %}
+{% block breadcrumb %}
+  {{ parent() }}
+  <li><a href="/admin/series">series</a></li>
+  <li class="active">races</li>
+{% endblock %}
+{% block content %}
+  <h1>View All Races</h1>
+  <p class="important">
+    Manage races.
+  </p>
+  {% include "partials/errors.twig" %}
+  {% include "partials/message.twig" %}
+  {% include "races/insert-update.twig" %}
+
+  <h2>Races</h2>
+  <table class="table">
+    <thead>
+      <th>Type</th><th>Name</th><th>Date</th><th></th>
+    </thead>
+    <tbody>
+      {% for race in races %}
+        <tr>
+          <td>{{ race.raceTypeHandle|lower|capitalize }}</td>
+          <td>{{ race.name }}</td>
+          <td>{{ race.date }}</td>
+          <td><a href="/admin/races/{{ race.raceId }}/{{ race.resultUrl }}">View/Edit Results</a></td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+{% endblock %}
+{% block scripts %}
+<script type="text/javascript">
+$('#date1 input').datepicker({
+    format: "yyyy-mm-dd"
+});
+</script>
+{% endblock %}

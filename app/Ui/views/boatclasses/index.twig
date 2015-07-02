@@ -1,0 +1,40 @@
+{% extends "layout/main.twig" %}
+{% block breadcrumb %}
+  {{ parent() }}
+  <li class="active">classes</li>
+{% endblock %}
+{% block content %}
+  <h1>Boat Classes</h1>
+  <p class="important">
+    Manage boat classes.
+  </p>
+  {% include "partials/errors.twig" %}
+  {% include "partials/message.twig" %}
+  {% include "boatclasses/insert-update.twig" %}
+
+  <h2>Current Boat Classes</h2>
+  <p>Click a class name to view PY number details</p>
+  <table class="table">
+    <thead>
+      <tr>
+        <th>Class</th><th>Current active PY</th><th></th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for boatClass in boatClasses %}
+        <tr>
+          <td>{{ boatClass.name }}</td>
+          <td>
+          {% if boatClass.pyNumber|length > 0 %}
+            {{ boatClass.pyNumber }}
+          {% else %}
+            No PY Number Found!
+          {% endif %}
+          </td>
+          <td><a href="/admin/boatclasses/{{ boatClass.boatClassId }}/pynumbers">Edit PY Number</a></td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+
+{% endblock %}

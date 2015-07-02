@@ -1,0 +1,3 @@
+vendor
+config/services.config.local.php
+public/assets

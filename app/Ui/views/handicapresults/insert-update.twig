@@ -1,0 +1,54 @@
+<div class="row">
+  <form method="post" class="form">
+    <div class="col-md-6">
+      <div class="form-group">
+        <label for="boat-class">Class</label>
+        <select class="form-control" name="py_number_id" id="boat-class">
+          {% for boatClass in boatClasses %}
+            <option value="{{ boatClass.pyNumberId }}">{{ boatClass.name }}</option>
+          {% endfor %}
+        </select>
+      </div>
+      <div class="form-group">
+        <label for="sail-number">Sail Number</label>
+        <input type="text" name="sail_number" class="form-control" id="sail-number" placeholder="">
+      </div>
+      <div class="form-group">
+        <label for="result-laps">Laps</label>
+        <input type="text" value="{{ race.laps }}" name="result_laps" class="form-control" id="result-laps" placeholder="">
+      </div>
+    </div>
+    <div class="col-md-6">
+      <div class="col-md-6">
+        <div class="form-group">
+          <label for="result-minutes">Minutes</label>
+            <input type="text" name="result_minutes" class="form-control" id="result-minutes" placeholder="">
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="form-group">
+          <label for="result-seconds">Seconds</label>
+            <input type="text" name="result_seconds" class="form-control" id="result-seconds" placeholder="">
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="result-helm">Helm</label>
+        <select class="form-control" name="result_helm" id="result-helm">
+          {% for competitor in competitors %}
+            <option value="{{ competitor.competitorId }}">{{ competitor.firstName }} {{ competitor.lastName }}</option>
+          {% endfor %}
+        </select>
+      </div>
+      <div class="form-group">
+        <label for="result-crew">Crew</label>
+        <select class="form-control" name="result_crew" id="result-crew">
+          <option value="">No Crew</option>
+          {% for competitor in competitors %}
+            <option value="{{ competitor.competitorId }}">{{ competitor.firstName }} {{ competitor.lastName }}</option>
+          {% endfor %}
+        </select>
+      </div>
+      <button type="submit" class="btn btn-default pull-right">Add Result</button>
+    </div>
+  </form>
+</div>
