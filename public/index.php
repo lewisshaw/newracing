@@ -12,153 +12,13 @@ foreach ($servies as $service => $config) {
     $app->register(new $service(), $config);
 }
 
-$app['competitor.dal'] = $app->share(function () use ($app) {
-    return new Racing\Dal\Competitor($app['db']);
-});
-
-$app['series.dal'] = $app->share(function () use ($app) {
-    return new Racing\Dal\Series($app['db']);
-});
-
-$app['boatclass.dal'] = $app->share(function () use ($app) {
-    return new Racing\Dal\BoatClass($app['db']);
-});
-
-$app['pynumber.dal'] = $app->share(function () use ($app) {
-    return new Racing\Dal\PyNumber($app['db']);
-});
-
-$app['race.dal'] = $app->share(function () use ($app) {
-    $raceType = new Racing\Dal\RaceType($app['db']);
-    return new Racing\Dal\Race($app['db'], $raceType);
-});
-
-$app['handicapresult.dal'] = $app->share(function () use ($app) {
-    return new Racing\Dal\HandicapResult($app['db'], $app['resultcompetitor.dal']);
-});
-
-$app['resultcompetitor.dal'] = $app->share(function () use ($app) {
-    $competitorType = new Racing\Dal\CompetitorType($app['db']);
-    return new Racing\Dal\ResultCompetitor($app['db'], $competitorType);
-});
-
-$app['classresult.dal'] = $app->share(function () use ($app) {
-    return new Racing\Dal\ClassResult($app['db'], $app['resultcompetitor.dal']);
-});
-
-$app['unfinishedresult.dal'] = $app->share(function () use ($app) {
-    $unfinishedResultType = new Racing\Dal\UnfinishedResultType($app['db']);
-    return new Racing\Dal\UnfinishedResult($app['db'], $app['resultcompetitor.dal'], $unfinishedResultType);
-});
-
-$app['competitor.controller'] = $app->share(function () use ($app) {
-    return new RacingUi\Controller\CompetitorController($app['twig'], $app, $app['competitor.dal']);
-});
-
-$app['series.controller'] = $app->share(function () use ($app) {
-    return new RacingUi\Controller\SeriesController($app['twig'], $app, $app['series.dal']);
-});
-
-$app['boatclass.controller'] = $app->share(function () use ($app) {
-    return new RacingUi\Controller\BoatClassController($app['twig'], $app, $app['boatclass.dal']);
-});
-
-$app['pynumber.controller'] = $app->share(function () use ($app) {
-    return new RacingUi\Controller\PyNumberController($app['twig'], $app, $app['pynumber.dal'], $app['boatclass.dal']);
-});
-
-$app['race.controller'] = $app->share(function () use ($app) {
-    return new RacingUi\Controller\RaceController($app['twig'], $app, $app['race.dal']);
-});
-
-$app['handicapresult.controller'] = $app->share(function () use ($app) {
-    return new RacingUi\Controller\HandicapResultController(
-        $app['twig'],
-        $app,
-        $app['handicapresult.dal'],
-        $app['boatclass.dal'],
-        $app['competitor.dal'],
-        $app['race.dal'],
-        $app['unfinishedresult.dal']
-    );
-});
-
-$app['classresult.controller'] = $app->share(function () use ($app) {
-    return new RacingUi\Controller\ClassResultController(
-        $app['twig'],
-        $app,
-        $app['classresult.dal'],
-        $app['boatclass.dal'],
-        $app['competitor.dal'],
-        $app['race.dal'],
-        $app['unfinishedresult.dal']
-    );
-});
-
-$app['unfinishedresult.controller'] = $app->share(function () use ($app) {
-    return new RacingUi\Controller\UnfinishedResultController(
-        $app['twig'],
-        $app,
-        $app['unfinishedresult.dal'],
-        $app['boatclass.dal'],
-        $app['competitor.dal'],
-        $app['race.dal']
-    );
-});
-
-
-$app['competitor.validator'] = $app->share(function () use ($app) {
-    return new RacingUi\Validator\Competitor($app['validator']);
-});
-
-$app['series.validator']     = $app->share(function () use ($app) {
-    return new RacingUi\Validator\Series($app['validator']);
-});
-
-$app['boatclass.validator'] = $app->share(function () use ($app) {
-    return new RacingUi\Validator\BoatClass($app['validator']);
-});
-
-$app['pynumber.validator'] = $app->share(function () use ($app) {
-    return new RacingUi\Validator\PyNumber($app['validator']);
-});
-
-$app['race.validator'] = $app->share(function () use ($app) {
-    return new RacingUi\Validator\Race($app['validator']);
-});
-
-$app['handicapresult.validator'] = $app->share(function () use ($app) {
-    return new RacingUi\Validator\HandicapResult($app['validator']);
-});
-
-$app['classresult.validator'] = $app->share(function () use ($app) {
-    return new RacingUi\Validator\ClassResult($app['validator']);
-});
-
-$app['unfinishedresult.validator'] = $app->share(function () use ($app) {
-    return new RacingUi\Validator\UnfinishedResult($app['validator']);
-});
-
 $app->get('/', function(Request $request) use ($app) {
-    return $app['twig']->render('index.twig', [
-        'title'         => 'Racing | Home',
-    ]);
+    return 'Hi, this page is coming soon';
 });
 
 $app->get('/admin', function(Request $request) use ($app) {
     return $app->redirect('admin/series');
 });
-
-$app['twig'] = $app->share($app->extend('twig', function($twig, $app) {
-    $token = $app['security.token_storage']->getToken();
-
-    if (null !== $token) {
-        $user = $token->getUser();
-        $twig->addGlobal('user', ['name' => (string) $user]);
-    }
-
-    return $twig;
-}));
 
 $app->get('/login', function(Request $request) use ($app) {
     return $app['twig']->render('login.html', [
@@ -167,10 +27,6 @@ $app->get('/login', function(Request $request) use ($app) {
         'title'         => 'Racing | Login',
     ]);
 });
-
-//$app->post('admin/races/{raceId}/unfinishedresults', function () {
-//    return 'hello';
-//});
 
 $app->mount('admin/competitors', new RacingUi\Controller\Provider\Competitor());
 $app->mount('admin/series', new RacingUi\Controller\Provider\Series());

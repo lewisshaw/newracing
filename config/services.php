@@ -26,4 +26,13 @@ return [
         ],
     ],
     'Silex\Provider\UrlGeneratorServiceProvider' => [],
+    'Racing\ServiceProvider\BoatClass' => [],
+    'Racing\ServiceProvider\Competitor' => [],
+    'Racing\ServiceProvider\Series' => [],
+    'Racing\ServiceProvider\PyNumber' => [],
+    'Racing\ServiceProvider\Race' => [],
+    'Racing\ServiceProvider\HandicapResult' => [],
+    'Racing\ServiceProvider\Result' => [],
+    'Racing\ServiceProvider\ClassResult' => [],
+    'Racing\ServiceProvider\Twig' => [],
 ];
