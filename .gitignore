@@ -1,3 +1,4 @@
 vendor
 config/services.config.local.php
+config/app.php
 public/assets
