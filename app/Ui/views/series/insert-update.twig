@@ -1,19 +1,34 @@
-<form method="post" class="form-inline">
+<form method="post" class="{{ formClass }}"
+  {% if singleSeries is defined %}
+    action="/admin/series/{{ singleSeries.seriesId }}/update"
+  {% endif %}
+>
   <div class="form-group">
     <label for="name-text">Name</label>
-    <input type="text" name="series_name" class="form-control" id="name-text" placeholder="">
+    <input type="text" name="series_name" class="form-control" id="name-text" placeholder=""
+      {% if singleSeries is defined %}
+        value="{{ singleSeries.seriesName }}"
+      {% endif %}
+    >
   </div>
   <div class="form-group">
     <label for="start-date">Start Date</label>
     <span id='date1'>
-      <input type="text" name="start_date" class="form-control" id="start-date" placeholder="">
+      <input type="text" data-provide="datepicker-inline" data-date-format="yyyy-mm-dd" name="start_date" class="form-control" id="start-date" placeholder="">
     </span>
   </div>
   <div class="form-group">
     <label for="end-date">End Date</label>
     <span id='date2'>
-      <input type="text" name="end_date" class="form-control" id="end-date" placeholder="">
+      <input type="text" data-provide="datepicker-inline" data-date-format="yyyy-mm-dd" name="end_date" class="form-control" id="end-date" placeholder="">
     </span>
   </div>
-  <button type="submit" class="btn btn-default">Add Series</button>
+  <button type="submit" class="btn btn-default">
+    {% if singleSeries is defined %}
+      Update
+    {% else %}
+      Add
+    {% endif %}
+    Series
+  </button>
 </form>

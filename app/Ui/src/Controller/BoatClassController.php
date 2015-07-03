@@ -53,4 +53,36 @@ class BoatClassController
         $this->app['session']->set('message', 'Boat Class has been added');
         return $this->app->redirect('/admin/boatclasses');
     }
+
+    public function edit(Request $request, $boatClassId)
+    {
+        $errors = $this->getAndUnsetErrors();
+        $message = $this->getAndUnsetMessages();
+
+        $boatClass = $this->dal->get($boatClassId);
+
+        if (!$boatClass) {
+            $this->app->abort(404);
+        }
+
+        return $this->templater->render('boatclasses/edit.twig', [
+            'title'     => 'Racing | Boat Classes | Edit',
+            'errors'    => $errors,
+            'message'   => $message,
+            'boatClass' => $boatClass,
+        ]);
+    }
+
+    public function update(Request $request, $boatClassId)
+    {
+        $name = $request->get('boat_class_name');
+
+        if (!$this->dal->update($boatClassId, $name))
+        {
+            $this->app['session']->set('errors', ['Boat Class could not be updated, please retry']);
+            return $this->app->redirect('/admin/boatclasses');
+        }
+        $this->app['session']->set('message', 'Boat Class has been updated');
+        return $this->app->redirect('/admin/boatclasses');
+    }
 }

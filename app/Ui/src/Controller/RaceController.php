@@ -67,4 +67,26 @@ class RaceController
         $this->app['session']->set('message', 'Race has been added');
         return $this->app->redirect('/admin/series/' . $seriesId . '/races');
     }
+
+    public function publish($seriesId, $raceId)
+    {
+        if (!$this->dal->setPublished($raceId, 1))
+        {
+            $this->app['session']->set('errors', ['Race could not be published, please retry']);
+            return $this->app->redirect('/admin/series/' . $seriesId . '/races');
+        }
+        $this->app['session']->set('message', 'Race has been published');
+        return $this->app->redirect('/admin/series/' . $seriesId . '/races');
+    }
+
+    public function unPublish($seriesId, $raceId)
+    {
+        if (!$this->dal->setPublished($raceId, 0))
+        {
+            $this->app['session']->set('errors', ['Race could not be un-published, please retry']);
+            return $this->app->redirect('/admin/series/' . $seriesId . '/races');
+        }
+        $this->app['session']->set('message', 'Race has been un-published');
+        return $this->app->redirect('/admin/series/' . $seriesId . '/races');
+    }
 }

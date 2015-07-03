@@ -1,0 +1,15 @@
+{% extends "layout/main.twig" %}
+{% block breadcrumb %}
+  {{ parent() }}
+  <li><a href="/admin/boatclasses">classes</a></li>
+  <li class="active">edit</li>
+{% endblock %}
+{% block content %}
+  <h1>Edit Class - {{ boatClass.name }}</h1>
+  <p class="important">
+    Edit boat class.
+  </p>
+  {% include "partials/errors.twig" %}
+  {% include "partials/message.twig" %}
+  {% include "boatclasses/insert-update.twig" with {'formClass': 'form'} %}
+{% endblock %}

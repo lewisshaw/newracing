@@ -1,0 +1,23 @@
+{% extends "layout/main.twig" %}
+{% block breadcrumb %}
+  {{ parent() }}
+  <li><a href="/admin/series">series</a></li>
+  <li class="active">edit</li>
+{% endblock %}
+{% block content %}
+  <h1>Edit Series - {{ singleSeries.seriesName }}</h1>
+  <p class="important">
+    Edit series.
+  </p>
+  {% include "partials/errors.twig" %}
+  {% include "partials/message.twig" %}
+  {% include "series/insert-update.twig" with {'formClass': 'form'} %}
+{% endblock %}
+{% block scripts %}
+  <script type="text/javascript">
+    {% if singleSeries is defined %}
+      $('#start-date').datepicker('setDate', '{{ singleSeries.startDate }}');
+      $('#end-date').datepicker('setDate', '{{ singleSeries.endDate }}');
+    {% endif %}
+</script>
+{% endblock %}

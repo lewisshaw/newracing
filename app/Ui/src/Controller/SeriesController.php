@@ -54,4 +54,38 @@ class SeriesController
         $this->app['session']->set('message', 'Series has been added');
         return $this->app->redirect('/admin/series');
     }
+
+    public function edit(Request $request, $seriesId)
+    {
+        $errors = $this->getAndUnsetErrors();
+        $message = $this->getAndUnsetMessages();
+
+        $singleSeries = $this->dal->get($seriesId);
+
+        if (!$singleSeries) {
+            $this->app->abort(404);
+        }
+
+        return $this->templater->render('series/edit.twig', [
+            'title'        => 'Racing | Series | Edit',
+            'errors'       => $errors,
+            'message'      => $message,
+            'singleSeries' => $singleSeries,
+        ]);
+    }
+
+    public function update(Request $request, $seriesId)
+    {
+        $name      = $request->get('series_name');
+        $startDate = $request->get('start_date');
+        $endDate   = $request->get('end_date');
+
+        if (!$this->dal->update($seriesId, $name, $startDate, $endDate))
+        {
+            $this->app['session']->set('errors', ['Series could not be updated, please retry']);
+            return $this->app->redirect('/admin/series');
+        }
+        $this->app['session']->set('message', 'Series has been updated');
+        return $this->app->redirect('/admin/series');
+    }
 }

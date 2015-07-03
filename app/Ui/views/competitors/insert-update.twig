@@ -1,11 +1,28 @@
-<form method="post" class="form-inline">
+<form method="post" class="{{ formClass }}"
+  {% if competitor is defined %}
+    action="/admin/competitors/{{ competitor.competitorId }}/update"
+  {% endif %}
+>
   <div class="form-group">
     <label for="first-name-text">First Name</label>
-    <input type="text" name="first_name" class="form-control" id="first-name-text" placeholder="">
+    <input type="text" name="first_name" class="form-control" id="first-name-text" placeholder=""
+      {% if competitor is defined %}
+        value="{{ competitor.firstName }}"
+      {% endif %}
+    >
   </div>
   <div class="form-group">
     <label for="last-name-text">Last Name</label>
-    <input type="text" name="last_name" class="form-control" id="last-name-text" placeholder="">
+    <input type="text" name="last_name" class="form-control" id="last-name-text" placeholder=""
+      {% if competitor is defined %}
+        value="{{ competitor.lastName }}"
+      {% endif %}
+    >
   </div>
-  <button type="submit" class="btn btn-default">Add Competitor</button>
+  <button type="submit" class="btn btn-default">
+    {% if competitor is defined %}
+      Update
+    {% else %}
+      Add
+    {% endif %} Competitor</button>
 </form>

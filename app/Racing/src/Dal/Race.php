@@ -23,6 +23,7 @@ class Race
             r.seriesId,
             r.name,
             r.laps,
+            r.isPublished,
             DATE_FORMAT(r.date, \'%D %M %Y\') AS date
         FROM
             Racing.Race AS r
@@ -65,6 +66,29 @@ class Race
             ],
             [
                 ':raceId' => \PDO::PARAM_INT,
+            ]
+        );
+    }
+
+    public function setPublished($raceId, $published)
+    {
+        $query = '
+            UPDATE
+                Racing.Race
+            SET
+                isPublished = :isPublished
+            WHERE
+                raceId = :raceId';
+
+        return $this->dbConn->executeQuery(
+            $query,
+            [
+                ':isPublished' => $published,
+                ':raceId'      => $raceId,
+            ],
+            [
+                ':isPublished' => \PDO::PARAM_BOOL,
+                ':raceId'      => \PDO::PARAM_INT,
             ]
         );
     }

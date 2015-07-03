@@ -1,0 +1,15 @@
+{% extends "layout/main.twig" %}
+{% block breadcrumb %}
+  {{ parent() }}
+  <li><a href="/admin/competitors">competitors</a></li>
+  <li class="active">edit</li>
+{% endblock %}
+{% block content %}
+  <h1>Edit Competitor - {{ competitor.firstName }} {{competitor.lastName}} </h1>
+  <p class="important">
+    Edit competitor.
+  </p>
+  {% include "partials/errors.twig" %}
+  {% include "partials/message.twig" %}
+  {% include "competitors/insert-update.twig" with {'formClass': 'form'} %}
+{% endblock %}

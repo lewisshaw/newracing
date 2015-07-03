@@ -24,6 +24,19 @@ class BoatClass implements ControllerProviderInterface
                     }
                 });
 
+        $factory->get('/{boatClassId}/edit', 'boatclass.controller:edit');
+        $factory->post('/{boatClassId}/update', 'boatclass.controller:update')
+                ->before(function (Request $request) use ($app) {
+                    $validator = $app['boatclass.validator'];
+                    $errors = $validator->validate($request->request->all());
+                    if(count($errors))
+                    {
+                        $boatClassId = $request->get('boatClassId');
+                        $app['session']->set('errors', $errors);
+                        return new RedirectResponse('/admin/boatclasses/' . $boatClassId . '/edit');
+                    }
+                });
+
         return $factory;
     }
 }

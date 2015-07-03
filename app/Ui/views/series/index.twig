@@ -7,17 +7,17 @@
   <h1>Series</h1>
   <div class="panel panel-default">
     <div class="panel-body">
-      This page allows you to manage series. The series date will be used to determine which series are currently running, so ensure this is correct. Click the name of the series to edit the details.
+      This page allows you to manage series. The series date will be used to determine which series are currently running, so ensure this is correct.
      </div>
   </div>
   {% include "partials/errors.twig" %}
   {% include "partials/message.twig" %}
-  {% include "series/insert-update.twig" %}
+  {% include "series/insert-update.twig"  with {'formClass': 'form-inline'} %}
 
   <h2>All Series</h2>
   <table class ="table">
     <thead>
-      <th>Name</th><th>Start Date</th><th>End Date</th><th></th>
+      <th>Name</th><th>Start Date</th><th>End Date</th><th></th><th></th>
     </thead>
     <tbody>
       {% for seriesRow in series %}
@@ -25,19 +25,18 @@
           <td>{{ seriesRow.seriesName }}</td>
           <td>{{ seriesRow.startDate }}</td>
           <td>{{ seriesRow.endDate }}</td>
-          <td><a href="/admin/series/{{ seriesRow.seriesId }}/races">View/Edit Races</a></td>
+          <td>
+            <a href="/admin/series/{{ seriesRow.seriesId }}/edit">
+              <button class="btn btn-primary">Edit Series</button>
+            </a>
+          </td>
+          <td>
+            <a href="/admin/series/{{ seriesRow.seriesId }}/races">
+              <button class="btn btn-primary">View/Edit Races</button>
+            </a>
+          </td>
         </tr>
       {% endfor %}
     </tbody>
   </table>
-{% endblock %}
-{% block scripts %}
-<script type="text/javascript">
-$('#date1 input').datepicker({
-    format: "yyyy-mm-dd"
-});
-$('#date2 input').datepicker({
-    format: "yyyy-mm-dd"
-});
-</script>
 {% endblock %}

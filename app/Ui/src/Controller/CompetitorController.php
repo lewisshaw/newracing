@@ -53,4 +53,37 @@ class CompetitorController
         $this->app['session']->set('message', 'Competitor has been added');
         return $this->app->redirect('/admin/competitors');
     }
+
+    public function edit(Request $request, $competitorId)
+    {
+        $errors = $this->getAndUnsetErrors();
+        $message = $this->getAndUnsetMessages();
+
+        $competitor = $this->dal->get($competitorId);
+
+        if (!$competitor) {
+            $this->app->abort(404);
+        }
+
+        return $this->templater->render('competitors/edit.twig', [
+            'title'      => 'Racing | Competitor | Edit',
+            'errors'     => $errors,
+            'message'    => $message,
+            'competitor' => $competitor,
+        ]);
+    }
+
+    public function update(Request $request, $competitorId)
+    {
+        $firstName = $request->get('first_name');
+        $lastName  = $request->get('last_name');
+
+        if (!$this->dal->update($competitorId, $firstName, $lastName))
+        {
+            $this->app['session']->set('errors', ['Competitor could not be updated, please retry']);
+            return $this->app->redirect('/admin/competitors');
+        }
+        $this->app['session']->set('message', 'Competitor has been updated');
+        return $this->app->redirect('/admin/competitors');
+    }
 }

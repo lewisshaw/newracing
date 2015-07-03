@@ -35,7 +35,7 @@ class Competitor
             WHERE
                 competitorId = :competitorId';
 
-        return $this->dbConn->fetch(
+        return $this->dbConn->fetchAssoc(
             $query,
             [
                 ':competitorId' => $competitorId,
@@ -65,6 +65,32 @@ class Competitor
             [
                 ':firstName' => \PDO::PARAM_STR,
                 ':lastName'  => \PDO::PARAM_STR,
+            ]
+        );
+    }
+
+    public function update($competitorId, $firstName, $lastName)
+    {
+        $query = '
+            UPDATE
+                Racing.Competitor
+            SET
+                firstName = :firstName,
+                lastName = :lastName
+            WHERE
+                competitorId = :competitorId';
+
+        return $this->dbConn->executeQuery(
+            $query,
+            [
+                ':firstName'    => $firstName,
+                ':lastName'     => $lastName,
+                ':competitorId' => $competitorId,
+            ],
+            [
+                ':firstName'     => \PDO::PARAM_STR,
+                ':lastName'      => \PDO::PARAM_STR,
+                ':competitorId'  => \PDO::PARAM_INT,
             ]
         );
     }

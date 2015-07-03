@@ -23,6 +23,18 @@ class Competitor implements ControllerProviderInterface
                         return new RedirectResponse('/admin/competitors');
                     }
                 });
+        $factory->get('/{competitorId}/edit', 'competitor.controller:edit');
+        $factory->post('/{competitorId}/update', 'competitor.controller:update')
+                ->before(function (Request $request) use ($app) {
+                    $validator = $app['competitor.validator'];
+                    $errors = $validator->validate($request->request->all());
+                    if(count($errors))
+                    {
+                        $competitorId = $request->get('competitorId');
+                        $app['session']->set('errors', $errors);
+                        return new RedirectResponse('/admin/competitors/' . $competitorId . '/edit');
+                    }
+                });
 
         return $factory;
     }

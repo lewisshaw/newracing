@@ -87,4 +87,27 @@ class BoatClass
             ]
         );
     }
+
+    public function update($boatClassId, $name)
+    {
+        $query = '
+            UPDATE
+                Racing.BoatClass
+            SET
+                name = :name
+            WHERE
+                boatClassId = :boatClassId';
+
+        return $this->dbConn->executeQuery(
+            $query,
+            [
+                ':name'        => $name,
+                ':boatClassId' => $boatClassId,
+            ],
+            [
+                ':name'        => \PDO::PARAM_STR,
+                ':boatClassId' => \PDO::PARAM_INT,
+            ]
+        );
+    }
 }

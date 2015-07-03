@@ -32,16 +32,19 @@ class Series
     {
         $query = '
             SELECT
-                seriesId, seriesName, startDate, endDate
+                seriesId,
+                seriesName,
+                DATE_FORMAT(startDate, \'%Y-%m-%d\') AS startDate,
+                DATE_FORMAT(endDate, \'%Y-%m-%d\') AS endDate
             FROM
                 Racing.Series
             WHERE
                 seriesId = :seriesId';
 
-        return $this->dbConn->fetch(
+        return $this->dbConn->fetchAssoc(
             $query,
             [
-                ':seriesId' => $ser,
+                ':seriesId' => $seriesId,
             ],
             [
                 ':seriesId' => \PDO::PARAM_INT,
@@ -72,6 +75,34 @@ class Series
                 ':seriesName' => \PDO::PARAM_STR,
                 ':startDate'  => \PDO::PARAM_STR,
                 ':endDate'    => \PDO::PARAM_STR,
+            ]
+        );
+    }
+
+    public function update($seriesId, $name, $startDate, $endDate)
+    {
+        $query = '
+            UPDATE
+                Racing.Series
+            SET
+                seriesName = :seriesName,
+                startDate = :startDate,
+                endDate = :endDate
+            WHERE
+                seriesId = :seriesId';
+        return $this->dbConn->executeQuery(
+            $query,
+            [
+                ':seriesName' => $name,
+                ':startDate'  => $startDate,
+                ':endDate'    => $endDate,
+                ':seriesId'   => $seriesId,
+            ],
+            [
+                ':seriesName' => \PDO::PARAM_STR,
+                ':startDate'  => \PDO::PARAM_STR,
+                ':endDate'    => \PDO::PARAM_STR,
+                ':seriesId'   => \PDO::PARAM_INT,
             ]
         );
     }

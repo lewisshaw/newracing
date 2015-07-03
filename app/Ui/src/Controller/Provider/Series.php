@@ -24,6 +24,19 @@ class Series implements ControllerProviderInterface
                     }
                 });
 
+        $factory->get('/{seriesId}/edit', 'series.controller:edit');
+        $factory->post('/{seriesId}/update', 'series.controller:update')
+                ->before(function (Request $request) use ($app) {
+                    $validator = $app['series.validator'];
+                    $errors = $validator->validate($request->request->all());
+                    if(count($errors))
+                    {
+                        $seriesId = $request->get('seriesId');
+                        $app['session']->set('errors', $errors);
+                        return new RedirectResponse('/admin/series/' . $seriesId . '/edit');
+                    }
+                });
+
         return $factory;
     }
 }

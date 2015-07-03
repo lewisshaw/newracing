@@ -21,7 +21,7 @@ $app->get('/admin', function(Request $request) use ($app) {
 });
 
 $app->get('/login', function(Request $request) use ($app) {
-    return $app['twig']->render('login.html', [
+    return $app['twig']->render('login.twig', [
         'error'         => $app['security.last_error']($request),
         'last_username' => $app['session']->get('_security.last_username'),
         'title'         => 'Racing | Login',
@@ -36,6 +36,5 @@ $app->mount('admin/series/{seriesId}/races', new RacingUi\Controller\Provider\Ra
 $app->mount('admin/races/{raceId}/results', new RacingUi\Controller\Provider\HandicapResult());
 $app->mount('admin/races/{raceId}/classresults', new RacingUi\Controller\Provider\ClassResult());
 $app->mount('admin/races/{raceId}/unfinishedresults', new RacingUi\Controller\Provider\UnfinishedResult());
-
 
 $app->run();
