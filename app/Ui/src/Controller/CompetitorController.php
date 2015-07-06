@@ -2,6 +2,7 @@
 namespace RacingUi\Controller;
 
 use Racing\Dal\Competitor;
+use Racing\Error\Error;
 use RacingUi\Session\SessionAlertsTrait;
 use Silex\Application;
 use Symfony\Component\HttpFoundation\Request;
@@ -30,7 +31,12 @@ class CompetitorController
         $errors = $this->getAndUnsetErrors();
         $message = $this->getAndUnsetMessages();
 
-        $competitors = $this->dal->getAll();
+        try {
+            $competitors = $this->dal->getAll();
+        } catch (\Exception $e) {
+            $competitors = [];
+            $errors[] = new Error('CRITICAL ERROR - Unable to get competitors');
+        }
 
         return $this->templater->render('competitors/index.twig', [
             'title' => 'Racing | Competitors',
