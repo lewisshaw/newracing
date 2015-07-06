@@ -16,7 +16,13 @@ class BoatClass
     public function validate(array $data)
     {
         $constraint = new Assert\Collection([
-                'boat_class_name' => [new Assert\NotBlank()],
+                'boat_class_name' => [
+                    new Assert\NotBlank(['message' => 'Boat class name must not be blank']),
+                    new Assert\Type([
+                        'type' => 'string',
+                        'message' => 'Please enter a valid boat class name'
+                    ]),
+                ],
             ]);
 
         return $this->validator->validateValue($data, $constraint);

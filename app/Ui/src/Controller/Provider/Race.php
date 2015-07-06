@@ -25,8 +25,10 @@ class Race implements ControllerProviderInterface
                     }
                 });
 
-        $factory->post('/{raceId}/publish', 'race.controller:publish');
-        $factory->post('/{raceId}/unpublish', 'race.controller:unPublish');
+        $factory->post('/{raceId}/publish', 'race.controller:publish')
+                ->assert('raceId', '\d+');
+        $factory->post('/{raceId}/unpublish', 'race.controller:unPublish')
+                ->assert('raceId', '\d+');
 
         return $factory;
     }

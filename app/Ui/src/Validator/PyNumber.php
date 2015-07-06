@@ -16,7 +16,15 @@ class PyNumber
     public function validate(array $data)
     {
         $constraint = new Assert\Collection([
-                'py_number' => [new Assert\NotBlank()],
+                'py_number' => [
+                    new Assert\NotBlank([
+                        'message' => 'PY Number must not be blank',
+                    ]),
+                    new Assert\Regex([
+                        'pattern' => '/^\d+$/',
+                        'message' => 'PY Number must be numeric'
+                    ]),
+                ],
             ]);
 
         return $this->validator->validateValue($data, $constraint);

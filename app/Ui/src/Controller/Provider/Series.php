@@ -24,8 +24,10 @@ class Series implements ControllerProviderInterface
                     }
                 });
 
-        $factory->get('/{seriesId}/edit', 'series.controller:edit');
+        $factory->get('/{seriesId}/edit', 'series.controller:edit')
+                ->assert('seriesId', '\d+');
         $factory->post('/{seriesId}/update', 'series.controller:update')
+                ->assert('seriesId', '\d+')
                 ->before(function (Request $request) use ($app) {
                     $validator = $app['series.validator'];
                     $errors = $validator->validate($request->request->all());

@@ -24,8 +24,10 @@ class BoatClass implements ControllerProviderInterface
                     }
                 });
 
-        $factory->get('/{boatClassId}/edit', 'boatclass.controller:edit');
+        $factory->get('/{boatClassId}/edit', 'boatclass.controller:edit')
+                ->assert('boatClassId', '\d+');
         $factory->post('/{boatClassId}/update', 'boatclass.controller:update')
+                ->assert('boatClassId', '\d+')
                 ->before(function (Request $request) use ($app) {
                     $validator = $app['boatclass.validator'];
                     $errors = $validator->validate($request->request->all());

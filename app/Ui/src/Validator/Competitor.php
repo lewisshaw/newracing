@@ -16,8 +16,20 @@ class Competitor
     public function validate(array $data)
     {
         $constraint = new Assert\Collection([
-                'first_name' => [new Assert\NotBlank()],
-                'last_name'  => [new Assert\NotBlank()],
+                'first_name' => [
+                    new Assert\NotBlank(['message' => 'First name must not be blank']),
+                    new Assert\Type([
+                        'type'    => 'string',
+                        'message' => 'First name must be a string',
+                    ]),
+                ],
+                'last_name'  => [
+                    new Assert\NotBlank(['message' => 'Last name must not be blank']),
+                    new Assert\Type([
+                        'type'    => 'string',
+                        'message' => 'Last name must be a string',
+                    ]),
+                ],
             ]);
 
         return $this->validator->validateValue($data, $constraint);
