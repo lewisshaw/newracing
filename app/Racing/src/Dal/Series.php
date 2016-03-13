@@ -106,4 +106,28 @@ class Series
             ]
         );
     }
+
+    public function getByDate($date)
+    {
+        $query = '
+            SELECT
+                seriesId,
+                seriesName,
+                DATE_FORMAT(startDate, \'%Y-%m-%d\') AS startDate,
+                DATE_FORMAT(endDate, \'%Y-%m-%d\') AS endDate
+            FROM
+                Racing.Series
+            WHERE
+                startDate <= :date
+            AND
+                endDate >= :date';
+
+        return $this->dbConn->fetchAll(
+            $query,
+            [
+                ':date' => $date
+            ]
+        );
+    }
+
 }

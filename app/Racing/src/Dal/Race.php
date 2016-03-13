@@ -128,4 +128,33 @@ class Race
             ]
         );
     }
+
+    public function getBySeries($seriesId)
+    {
+        $query = '
+        SELECT
+            r.raceId, rt.raceTypeHandle, r.seriesId, r.name, r.laps, r.date
+        FROM
+            Racing.Race AS r
+        INNER JOIN
+            Racing.RaceType AS rt
+        ON
+            rt.raceTypeId = r.raceTypeId
+        WHERE
+            r.seriesId = :seriesId
+        ORDER BY
+            r.date DESC';
+
+        return $this->dbConn->fetchAll(
+            $query,
+            [
+                ':seriesId' => $seriesId,
+            ],
+            [
+                ':seriesId' => \PDO::PARAM_INT,
+            ]
+        );
+    }
+
+
 }
