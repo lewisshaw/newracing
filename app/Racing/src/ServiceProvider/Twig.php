@@ -10,7 +10,6 @@ class Twig implements ServiceProviderInterface
     {
         $app['twig'] = $app->share($app->extend('twig', function($twig, $app) {
             $token = $app['security.token_storage']->getToken();
-
             if (null !== $token) {
                 $user = $token->getUser();
                 $twig->addGlobal('user', ['name' => (string) $user]);

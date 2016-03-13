@@ -12,8 +12,8 @@ foreach ($servies as $service => $config) {
     $app->register(new $service(), $config);
 }
 
-$app->get('/', function(Request $request) use ($app) {
-    return 'Hi, this page is coming soon';
+$app['home.controller'] = $app->share(function () use ($app) {
+    return new RacingUi\Controller\User\HomeController($app['twig'], $app);
 });
 
 $app->get('/admin', function(Request $request) use ($app) {
@@ -36,5 +36,6 @@ $app->mount('admin/series/{seriesId}/races', new RacingUi\Controller\Provider\Ra
 $app->mount('admin/races/{raceId}/results', new RacingUi\Controller\Provider\HandicapResult());
 $app->mount('admin/races/{raceId}/classresults', new RacingUi\Controller\Provider\ClassResult());
 $app->mount('admin/races/{raceId}/unfinishedresults', new RacingUi\Controller\Provider\UnfinishedResult());
+$app->mount('/', new RacingUi\Controller\User\Provider\Home());
 
 $app->run();
