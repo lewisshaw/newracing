@@ -49,8 +49,9 @@ class BoatClassController
     public function insert(Request $request)
     {
         $name = $request->get('boat_class_name');
+        $persons = $request->get('persons');
 
-        if (!$this->dal->insert($name))
+        if (!$this->dal->insert($name, $persons))
         {
             $this->app['session']->set('errors', ['Boat Class could not be added, please retry']);
             return $this->app->redirect('/admin/boatclasses');
@@ -101,7 +102,7 @@ class BoatClassController
             if (empty($row[0]) || empty($row[4])) {
                 continue;
             }
-            $this->boatClass->addOrUpdate(ucwords(strtolower($row[0])), $row[4]);
+            $this->boatClass->addOrUpdate(ucwords(strtolower($row[0])), $row[4], $row[1]);
         }
         $this->app['session']->set('message', 'File processed - Please check py numbers manually to ensure they are correct');
         return $this->app->redirect('/admin/boatclasses');

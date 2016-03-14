@@ -23,6 +23,13 @@ class BoatClass
                         'message' => 'Please enter a valid boat class name'
                     ]),
                 ],
+                'persons' => [
+                    new Assert\NotBlank(['message' => 'Persons must not be blank']),
+                    new Assert\Regex([
+                        'pattern' => '/^\d+$/',
+                        'message' => 'Crew must be numeric'
+                    ]),
+                ]
             ]);
 
         return $this->validator->validateValue($data, $constraint);

@@ -14,14 +14,14 @@ class BoatClassWithPy
         $this->boatClassDal = $boatClassDal;
         $this->pyNumberDal  = $pyNumberDal;
     }
-    public function addOrUpdate($boatClassName, $pyNumber)
+    public function addOrUpdate($boatClassName, $pyNumber, $persons)
     {
         $boatClass = $this->boatClassDal->getByName($boatClassName);
         if ($boatClass) {
             $boatClassId = $boatClass['boatClassId'];
         }
         else {
-            $boatClassId = $this->boatClassDal->insert($boatClassName);
+            $boatClassId = $this->boatClassDal->insert($boatClassName, $persons);
         }
 
         if ($boatClass && $pyNumber == $boatClass['pyNumber']) {

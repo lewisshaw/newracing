@@ -28,6 +28,9 @@ class Handicap
         $results = $this->handicapResultDal->getByRace($raceId);
         $race = $this->raceDal->get($raceId);
         foreach ($results as &$result) {
+            if (!$result['crew'] && $result['boatClassPersons'] > 1) {
+                $result['pyNumber'] -= 20;
+            }
             $timeAfterLaps = round(bcmul(bcdiv($result['time'], $result['laps'], 5), $race['laps'], 5));
             $result['correctedTime'] = round(bcdiv(bcmul($timeAfterLaps, 1000, 5), $result['pyNumber'], 5));
         }

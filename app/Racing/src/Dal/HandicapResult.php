@@ -27,7 +27,8 @@ class HandicapResult
                 pn.pyNumber,
                 hr.time,
                 hr.laps,
-                bc.name AS boatClassName
+                bc.name AS boatClassName,
+                bc.persons AS boatClassPersons
             FROM
                 Racing.Result AS r
             INNER JOIN

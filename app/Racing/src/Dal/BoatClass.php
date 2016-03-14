@@ -16,7 +16,7 @@ class BoatClass
     {
         $query = '
             SELECT
-                bc.boatClassId, bc.name, pn.pyNumber
+                bc.boatClassId, bc.name, pn.pyNumber, bc.persons
             FROM
                 Racing.BoatClass AS bc
             LEFT JOIN
@@ -33,7 +33,7 @@ class BoatClass
     {
         $query = '
             SELECT
-                bc.boatClassId, bc.name, pn.pyNumber, pn.pyNumberId
+                bc.boatClassId, bc.name, pn.pyNumber, pn.pyNumberId, bc.persons
             FROM
                 Racing.BoatClass AS bc
             INNER JOIN
@@ -52,7 +52,7 @@ class BoatClass
     {
         $query = '
             SELECT
-                boatClassId, name
+                boatClassId, name, persons
             FROM
                 Racing.BoatClass
             WHERE
@@ -73,7 +73,7 @@ class BoatClass
     {
         $query = '
             SELECT
-                bc.boatClassId, bc.name, pn.pyNumber
+                bc.boatClassId, bc.name, pn.pyNumber, bc.persons
             FROM
                 Racing.BoatClass AS bc
             INNER JOIN
@@ -93,21 +93,25 @@ class BoatClass
         );
     }
 
-    public function insert($name)
+    public function insert($name, $persons)
     {
         $query = '
             INSERT INTO Racing.BoatClass(
-                name
+                name,
+                persons
             ) VALUES (
-                :name
+                :name,
+                :persons
             )';
         $this->dbConn->executeQuery(
             $query,
             [
                 ':name' => $name,
+                ':persons' => $persons,
             ],
             [
                 ':name' => \PDO::PARAM_STR,
+                ':persons' => \PDO::PARAM_INT,
             ]
         );
 

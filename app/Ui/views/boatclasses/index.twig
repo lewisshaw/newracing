@@ -27,7 +27,7 @@
   <table class="table">
     <thead>
       <tr>
-        <th>Class</th><th>Current active PY</th><th></th><th></th>
+        <th>Class</th><th>Current active PY</th><th>Number of Crew<th></th><th></th>
       </tr>
     </thead>
     <tbody>
@@ -40,6 +40,7 @@
           {% else %}
             No PY Number Found!
           {% endif %}
+          <td>{{boatClass.persons}}</td>
           </td>
           <td>
             <a href="/admin/boatclasses/{{ boatClass.boatClassId }}/edit">
