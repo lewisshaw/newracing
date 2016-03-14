@@ -23,6 +23,7 @@ class Handicap
     public function getSortedResults($raceId)
     {
         $results = $this->handicapResultDal->getByRace($raceId);
+        //put laps in here!!!
         foreach ($results as &$result) {
             $result['correctedTime'] = round(bcdiv(bcmul($result['time'], 1000, 5), $result['pyNumber'], 5));
         }

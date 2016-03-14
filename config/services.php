@@ -35,4 +35,5 @@ return [
     'Racing\ServiceProvider\Result' => [],
     'Racing\ServiceProvider\ClassResult' => [],
     'Racing\ServiceProvider\Twig' => [],
+    'Racing\ServiceProvider\User' => [],
 ];

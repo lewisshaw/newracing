@@ -32,6 +32,18 @@ class Result implements ServiceProviderInterface
         $app['unfinishedresult.validator'] = $app->share(function () use ($app) {
             return new \RacingUi\Validator\UnfinishedResult($app['validator']);
         });
+
+        $app['results.handicap'] = $app->share(function () use ($app) {
+            return new \Racing\Results\Handicap($app['handicapresult.dal'], $app['unfinishedresult.dal']);
+        });
+
+        $app['results.class'] = $app->share(function () use ($app) {
+            return new \Racing\Results\ClassResult($app['classresult.dal'], $app['unfinishedresult.dal']);
+        });
+
+        $app['lookup.result'] = $app->share(function () use ($app) {
+            return new \Racing\Lookup\Result($app['competitor.dal'], $app['boatclass.dal']);
+        });
     }
 
     public function boot(Application $app)

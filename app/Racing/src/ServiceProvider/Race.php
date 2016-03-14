@@ -20,6 +20,10 @@ class Race implements ServiceProviderInterface
         $app['race.validator'] = $app->share(function () use ($app) {
             return new \RacingUi\Validator\Race($app['validator']);
         });
+
+        $app['races.racesbyseries'] = $app->share(function () use ($app) {
+            return new \Racing\Races\RacesBySeries($app['series.dal'], $app['race.dal']);
+        });
     }
 
     public function boot(Application $app)
