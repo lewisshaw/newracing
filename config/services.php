@@ -23,6 +23,9 @@ return [
                 'users'   => $localConfig['users'],
                 'logout' => ['logout_path' => '/admin/logout'],
             ],
+            'unsecured' => [
+                'anonymous' => true,
+            ],
         ],
     ],
     'Silex\Provider\UrlGeneratorServiceProvider' => [],

@@ -16,7 +16,7 @@
   <h2>Races</h2>
   <table class="table">
     <thead>
-      <th>Type</th><th>Name</th><th>Date</th><th></th><th></th>
+      <th>Type</th><th>Name</th><th>Date</th><th></th><th></th><th></th>
     </thead>
     <tbody>
       {% for race in races %}
@@ -24,6 +24,11 @@
           <td>{{ race.raceTypeHandle|lower|capitalize }}</td>
           <td>{{ race.name }}</td>
           <td>{{ race.date }}</td>
+          <td>
+            {% if race.isPublished %}
+              <a href="/admin/races/{{ race.raceId }}/results/{{ race.raceTypeHandle|lower }}/csv">Sailwave CSV</a>
+            {% endif %}
+          </td>
           <td>
             {% if race.isPublished == true %}
               {% include "races/publish.twig" with

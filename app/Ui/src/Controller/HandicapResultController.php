@@ -7,6 +7,8 @@ use Racing\Results\Handicap;
 use RacingUi\Session\SessionAlertsTrait;
 use Silex\Application;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+use League\Csv\Writer;
 
 class HandicapResultController
 {
@@ -54,6 +56,35 @@ class HandicapResultController
             'competitors' => $competitors,
             'race'        => $race,
         ]);
+    }
+
+    public function csv(Request $request, $raceId)
+    {
+        $results = $this->handicapResult->getSortedResults($raceId);
+        $race    = $this->raceDal->get($raceId);
+        $file    = new \SplFileObject('php://temp', 'w');
+        $writer = Writer::createFromFileObject($file);
+        $writer->insertOne(['SailNo', 'Class', 'HelmName', 'RaceNo', 'Place', 'Code']);
+        foreach ($results as $result) {
+            $row = [$result['sailNumber'], $result['boatClassName'], $result['helm'], date('d/m/Y', strtotime($race['date'])), $result['position']];
+            if (isset($result['unfinishedResultHandle'])) {
+                $row[] = $result['unfinishedResultHandle'];
+            }
+            else {
+                $row[] = '';
+            }
+
+            $writer->insertOne($row);
+        }
+        $filename = 'sailwave-results-' . date('d-m-Y-i:j:s');
+        return new Response(
+            $writer->__toString(),
+            200,
+            [
+                'Content-Type' => 'text/csv',
+                'Content-Disposition' => "attachment;filename=$filename.csv",
+            ]
+        );
     }
 
     public function insert(Request $request, $raceId)

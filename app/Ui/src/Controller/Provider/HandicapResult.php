@@ -24,6 +24,7 @@ class HandicapResult implements ControllerProviderInterface
                         return new RedirectResponse('/admin/races/' . $raceId . '/results/handicap');
                     }
                 });
+        $factory->get('/csv', 'handicapresult.controller:csv');
 
         return $factory;
     }
