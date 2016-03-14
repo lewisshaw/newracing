@@ -130,4 +130,27 @@ class Series
         );
     }
 
+    public function getBeforeDate($date)
+    {
+        $query = '
+            SELECT
+                seriesId,
+                seriesName,
+                DATE_FORMAT(startDate, \'%Y-%m-%d\') AS startDate,
+                DATE_FORMAT(endDate, \'%Y-%m-%d\') AS endDate
+            FROM
+                Racing.Series
+            WHERE
+                endDate < :date
+            ORDER BY
+                endDate desc';
+
+        return $this->dbConn->fetchAll(
+            $query,
+            [
+                ':date' => $date
+            ]
+        );
+    }
+
 }

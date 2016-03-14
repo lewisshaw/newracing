@@ -3,8 +3,7 @@ namespace RacingUi\Controller\User;
 
 use RacingUi\Session\SessionAlertsTrait;
 use Silex\Application;
-use Racing\Dal\Series;
-use Racing\Dal\Race;
+use Racing\Races\RacesBySeries;
 
 class HomeController
 {
@@ -12,15 +11,13 @@ class HomeController
 
     private $templater;
     private $app;
-    private $dal;
-    private $racesDal;
+    private $racesBySeries;
 
-    public function __construct($templater, Application $app, Series $dal, Race $racesDal)
+    public function __construct($templater, Application $app, RacesBySeries $racesBySeries)
     {
         $this->templater = $templater;
         $this->app = $app;
-        $this->dal = $dal;
-        $this->racesDal = $racesDal;
+        $this->racesBySeries = $racesBySeries;
     }
 
     public function index()
@@ -28,17 +25,15 @@ class HomeController
         $errors = $this->getAndUnsetErrors();
         $message = $this->getAndUnsetMessages();
 
-        $currentSeries = $this->dal->getByDate(date('Y-m-d'));
-        foreach ($currentSeries as &$series) {
-            $series['races'] = $this->racesDal->getPublishedBySeries($series['seriesId']);
-        }
-        unset($series);
+        $series = $this->racesBySeries->getSeriesRacesByDate(date('Y-m-d'));
+        $olderSeries = $this->racesBySeries->getSeriesRacesBeforeDate(date('Y-m-d'));
 
         return $this->templater->render('user/home.twig', [
             'title' => 'Racing | Home',
             'errors' => $errors,
             'message' => $message,
-            'series' => $currentSeries,
+            'series' => $series,
+            'olderSeries' => $olderSeries,
         ]);
     }
 }

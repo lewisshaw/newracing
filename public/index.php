@@ -12,8 +12,12 @@ foreach ($servies as $service => $config) {
     $app->register(new $service(), $config);
 }
 
+$app['races.racesbyseries'] = $app->share(function () use ($app) {
+    return new Racing\Races\RacesBySeries($app['series.dal'], $app['race.dal']);
+});
+
 $app['home.controller'] = $app->share(function () use ($app) {
-    return new RacingUi\Controller\User\HomeController($app['twig'], $app, $app['series.dal'], $app['race.dal']);
+    return new RacingUi\Controller\User\HomeController($app['twig'], $app, $app['races.racesbyseries']);
 });
 
 $app['results.handicap'] = $app->share(function () use ($app) {

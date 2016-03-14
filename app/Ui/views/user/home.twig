@@ -9,9 +9,30 @@
     </div>
     <div class="panel-body">
       {% for race in seriesRow.races %}
-        <a href="/races/{{ race.raceId }}/results/{{ race.raceTypeHandle|lower }}">{{ race.name }} - {{ race.date|date("d/m/Y") }}</a>
+        <p><a href="/races/{{ race.raceId }}/results/{{ race.raceTypeHandle|lower }}">{{ race.name }} - {{ race.date|date("d/m/Y") }}</a></p>
       {% endfor %}
     </div>
   </div>
 {% endfor %}
+<h3>Older Series</h3>
+<div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+{% for series in olderSeries %}
+  <div class="panel panel-default">
+    <div class="panel-heading" role="tab" id="heading{{loop.index}}">
+      <h4 class="panel-title">
+        <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapse{{loop.index}}" aria-expanded="false" aria-controls="collapse{{loop.index}}">
+          {{ series.seriesName }} series - ran from {{ series.startDate|date("d/m/Y") }} to {{ series.endDate|date("d/m/Y") }}
+        </a>
+      </h4>
+    </div>
+    <div id="collapse{{loop.index}}" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading{{loop.index}}">
+      <div class="panel-body">
+        {% for race in series.races %}
+          <p><p><a href="/races/{{ race.raceId }}/results/{{ race.raceTypeHandle|lower }}">{{ race.name }} - {{ race.date|date("d/m/Y") }}</a></p>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+{% endfor %}
+</div>
 {% endblock %}
