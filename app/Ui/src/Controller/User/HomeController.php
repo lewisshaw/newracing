@@ -30,7 +30,7 @@ class HomeController
 
         $currentSeries = $this->dal->getByDate(date('Y-m-d'));
         foreach ($currentSeries as &$series) {
-            $series['races'] = $this->racesDal->getBySeries($series['seriesId']);
+            $series['races'] = $this->racesDal->getPublishedBySeries($series['seriesId']);
         }
         unset($series);
 

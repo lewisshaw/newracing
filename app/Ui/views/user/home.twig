@@ -9,7 +9,7 @@
     </div>
     <div class="panel-body">
       {% for race in seriesRow.races %}
-        <a href="/races/{{ race.raceId }}">{{ race.name }} - {{ race.date|date("d/m/Y") }}</a>
+        <a href="/races/{{ race.raceId }}/results/{{ race.raceTypeHandle|lower }}">{{ race.name }} - {{ race.date|date("d/m/Y") }}</a>
       {% endfor %}
     </div>
   </div>

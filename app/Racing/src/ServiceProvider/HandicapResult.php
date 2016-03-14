@@ -16,11 +16,9 @@ class HandicapResult implements ServiceProviderInterface
             return new \RacingUi\Controller\HandicapResultController(
                 $app['twig'],
                 $app,
-                $app['handicapresult.dal'],
-                $app['boatclass.dal'],
-                $app['competitor.dal'],
+                $app['lookup.result'],
                 $app['race.dal'],
-                $app['unfinishedresult.dal']
+                $app['results.handicap']
             );
         });
 

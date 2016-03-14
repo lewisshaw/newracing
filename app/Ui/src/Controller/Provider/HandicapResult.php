@@ -21,7 +21,7 @@ class HandicapResult implements ControllerProviderInterface
                     {
                         $raceId = $request->get('raceId');
                         $app['session']->set('errors', $errors);
-                        return new RedirectResponse('/admin/races/' . $raceId . '/results');
+                        return new RedirectResponse('/admin/races/' . $raceId . '/results/handicap');
                     }
                 });
 

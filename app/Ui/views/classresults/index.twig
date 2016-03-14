@@ -23,7 +23,7 @@
       {% include "classresults/insert-update.twig" %}
     </div>
     <div role="tabpanel" class="tab-pane" id="add-non-finisher">
-      {% include "results/unfinished/insert-update.twig" with {'redirectUrl': 'admin/races/' ~ race.raceId ~ '/classresults'} %}
+      {% include "results/unfinished/insert-update.twig" with {'redirectUrl': 'admin/races/' ~ race.raceId ~ '/results/' ~ race.raceTypeHandle } %}
     </div>
   </div>
   <h2>Results</h2>
@@ -46,22 +46,7 @@
             {% endif %}
           </td>
           <td>{{ result.boatClassName }}</td>
-          <td>{{ result.position }}</td>
-        </tr>
-      {% endfor %}
-      {% for result in unfinishedResults %}
-        <tr>
-          <td>{{ result.sailNumber }}</td>
-          <td>{{ result.helm }}</td>
-          <td>
-            {% if result.crew|length > 0 %}
-              {{ result.crew }}
-            {%else %}
-              No Crew
-            {% endif %}
-          </td>
-          <td>{{ result.boatClassName }}</td>
-          <td>{{ result.unfinishedTypeHandle }}</td>
+          <td>{{ result.position is defined ? result.position : result.unfinishedTypeHandle }}</td>
         </tr>
       {% endfor %}
     </tbody>

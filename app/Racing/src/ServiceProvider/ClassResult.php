@@ -16,11 +16,9 @@ class ClassResult implements ServiceProviderInterface
             return new \RacingUi\Controller\ClassResultController(
                 $app['twig'],
                 $app,
-                $app['classresult.dal'],
-                $app['boatclass.dal'],
-                $app['competitor.dal'],
-                $app['race.dal'],
-                $app['unfinishedresult.dal']
+                $app['results.class'],
+                $app['lookup.result'],
+                $app['race.dal']
             );
         });
 

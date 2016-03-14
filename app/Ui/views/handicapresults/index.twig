@@ -24,7 +24,7 @@
       {% include "handicapresults/insert-update.twig" %}
     </div>
     <div role="tabpanel" class="tab-pane" id="add-non-finisher">
-      {% include "results/unfinished/insert-update.twig"  with {'redirectUrl': 'admin/races/' ~ race.raceId ~ '/results'} %}
+      {% include "results/unfinished/insert-update.twig"  with {'redirectUrl': 'admin/races/' ~ race.raceId ~ '/results/' ~ race.raceTypeHandle|lower } %}
     </div>
   </div>
 
@@ -50,11 +50,10 @@
             {% endif %}
           </td>
           <td>{{ result.boatClassName }}</td>
-          <td>{{ result.laps }}</td>
-          <td>{{ result.time }}</td>
+          <td>{{ result.laps is defined ? result.laps : result.unfinishedTypeHandle }}</td>
+          <td>{{ result.time is defined ? result.time : result.unfinishedTypeHandle }}</td>
         </tr>
       {% endfor %}
-      {% include "results/unfinished/list.twig" %}
     </tbody>
   </table>
 {% endblock %}

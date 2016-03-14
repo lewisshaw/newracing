@@ -24,6 +24,7 @@ class HandicapResult
                 r.raceId,
                 r.sailNumber,
                 hr.pyNumberId,
+                pn.pyNumber,
                 hr.time,
                 hr.laps,
                 bc.name AS boatClassName

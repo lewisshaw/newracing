@@ -1,11 +1,12 @@
 <?php
 namespace RacingUi\Controller;
 
-use Racing\Dal\ClassResult;
+use Racing\Results\ClassResult;
 use Racing\Dal\BoatClass;
 use Racing\Dal\Competitor;
 use Racing\Dal\Race;
 use Racing\Dal\UnfinishedResult;
+use Racing\Lookup\Result;
 use RacingUi\Session\SessionAlertsTrait;
 use Silex\Application;
 use Symfony\Component\HttpFoundation\Request;
@@ -16,29 +17,22 @@ class ClassResultController
 
     private $templater;
     private $app;
-    private $dal;
-    private $boatClassDal;
-    private $competitorsDal;
+    private $resultLookup;
     private $raceDal;
-    private $unfinishedResult;
 
     public function __construct(
        $templater,
        Application $app,
-       ClassResult $dal,
-       BoatClass $boatClassDal,
-       Competitor $competitorsDal,
-       Race $raceDal,
-       UnfinishedResult $unfinishedResult
+       ClassResult $classResult,
+       Result $resultLookup,
+       Race $raceDal
     ) {
 
-        $this->templater      = $templater;
-        $this->app            = $app;
-        $this->dal            = $dal;
-        $this->boatClassDal   = $boatClassDal;
-        $this->competitorsDal = $competitorsDal;
-        $this->raceDal        = $raceDal;
-        $this->unfinishedResult = $unfinishedResult;
+        $this->templater    = $templater;
+        $this->app          = $app;
+        $this->classResult  = $classResult;
+        $this->resultLookup = $resultLookup;
+        $this->raceDal      = $raceDal;
     }
 
     public function index(Request $request, $raceId)
@@ -46,13 +40,10 @@ class ClassResultController
         $errors = $this->getAndUnsetErrors();
         $message = $this->getAndUnsetMessages();
 
-        $results = $this->dal->getByRace($raceId);
-        $boatClasses = $this->boatClassDal->getAll();
-        $competitors = $this->competitorsDal->getAll();
+        $results = $this->classResult->getRawResults($raceId);
+        $boatClasses = $this->resultLookup->getBoatClasses();
+        $competitors = $this->resultLookup->getCompetitors();
         $race        = $this->raceDal->get($raceId);
-        $unfinishedResults = $this->unfinishedResult->getByRace($raceId);
-
-        //check here if race is the wrong type!!!!!
 
         return $this->templater->render('classresults/index.twig', [
             'title' => 'Racing | Class Results',
@@ -60,7 +51,6 @@ class ClassResultController
             'errors' => $errors,
             'message' => $message,
             'results' => $results,
-            'unfinishedResults' => $unfinishedResults,
             'boatClasses' => $boatClasses,
             'competitors' => $competitors,
             'race'        => $race,
@@ -75,21 +65,12 @@ class ClassResultController
         $helm        = $request->get('result_helm');
         $crew        = $request->get('result_crew');
 
-        $competitors = [
-            'helm' => $helm,
-        ];
-
-        if(!empty($crew))
-        {
-            $competitors['crew'] = $crew;
-        }
-
-        if (!$this->dal->insert($raceId, $sailNumber, $boatClassId, $position, $competitors))
+        if (!$this->classResult->add($raceId, $sailNumber, $boatClassId, $position, $helm, $crew))
         {
             $this->app['session']->set('errors', ['Result could not be added, please retry']);
-            return $this->app->redirect('/admin/races/' . $raceId . '/classresults');
+            return $this->app->redirect('/admin/races/' . $raceId . '/results/class');
         }
         $this->app['session']->set('message', 'Result has been added');
-        return $this->app->redirect('/admin/races/' . $raceId . '/classresults');
+        return $this->app->redirect('/admin/races/' . $raceId . '/results/class');
     }
 }

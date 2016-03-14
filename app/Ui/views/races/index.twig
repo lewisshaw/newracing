@@ -43,7 +43,7 @@
               %}
             {% endif %}
           </td>
-          <td><a href="/admin/races/{{ race.raceId }}/{{ race.resultUrl }}">View/Edit Results</a></td>
+          <td><a href="/admin/races/{{ race.raceId }}/results/{{ race.raceTypeHandle|lower }}">View/Edit Results</a></td>
         </tr>
       {% endfor %}
     </tbody>

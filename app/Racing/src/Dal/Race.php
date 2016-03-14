@@ -129,7 +129,7 @@ class Race
         );
     }
 
-    public function getBySeries($seriesId)
+    public function getPublishedBySeries($seriesId)
     {
         $query = '
         SELECT
@@ -142,6 +142,8 @@ class Race
             rt.raceTypeId = r.raceTypeId
         WHERE
             r.seriesId = :seriesId
+        AND
+            r.isPublished = 1
         ORDER BY
             r.date DESC';
 

@@ -21,7 +21,7 @@ class ClassResult implements ControllerProviderInterface
                     {
                         $raceId = $request->get('raceId');
                         $app['session']->set('errors', $errors);
-                        return new RedirectResponse('/admin/races/' . $raceId . '/classresults');
+                        return new RedirectResponse('/admin/races/' . $raceId . '/results/class');
                     }
                 });
 

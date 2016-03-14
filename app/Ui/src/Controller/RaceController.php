@@ -32,17 +32,6 @@ class RaceController
 
         $races = $this->dal->getAllbySeries($seriesId);
 
-        foreach ($races as &$race) {
-            if ($race['raceTypeHandle'] === 'HANDICAP') {
-                $resultUrl = 'results';
-            } else {
-                $resultUrl = 'classresults';
-            }
-
-            $race['resultUrl'] = $resultUrl;
-
-        }
-
         return $this->templater->render('races/index.twig', [
             'title' => 'Racing | Races',
             'isRacesActive' => true,
