@@ -3,8 +3,10 @@ namespace RacingUi\Controller;
 
 use Racing\Dal\BoatClass;
 use RacingUi\Session\SessionAlertsTrait;
+use Racing\BoatClass\BoatClassWithPy;
 use Silex\Application;
 use Symfony\Component\HttpFoundation\Request;
+use League\Csv\Reader;
 
 class BoatClassController
 {
@@ -13,16 +15,19 @@ class BoatClassController
     private $templater;
     private $app;
     private $dal;
+    private $boatClass;
 
     public function __construct(
        $templater,
        Application $app,
-       BoatClass $dal
+       BoatClass $dal,
+       BoatClassWithPy $boatClass
     ) {
 
         $this->templater = $templater;
         $this->app       = $app;
         $this->dal       = $dal;
+        $this->boatClass = $boatClass;
     }
 
     public function index(Request $request)
@@ -83,6 +88,22 @@ class BoatClassController
             return $this->app->redirect('/admin/boatclasses');
         }
         $this->app['session']->set('message', 'Boat Class has been updated');
+        return $this->app->redirect('/admin/boatclasses');
+    }
+
+    public function upload(Request $request)
+    {
+        $upload = $request->files->get('py-list-file');
+        $savedFile = $upload->move(__DIR__ . '../../../../../uploads/py/', $upload->getClientOriginalName());
+        $reader = Reader::createFromPath($savedFile->getPathName());
+        $rows = $reader->fetch();
+        foreach ($rows as $row) {
+            if (empty($row[0]) || empty($row[4])) {
+                continue;
+            }
+            $this->boatClass->addOrUpdate(ucwords(strtolower($row[0])), $row[4]);
+        }
+        $this->app['session']->set('message', 'File processed - Please check py numbers manually to ensure they are correct');
         return $this->app->redirect('/admin/boatclasses');
     }
 }

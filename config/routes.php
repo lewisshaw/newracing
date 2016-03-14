@@ -1,5 +1,5 @@
 <?php
-//Array of all mounted routes
+//Array of all mounted routes as route => provider
 return [
     'admin/competitors'=> new RacingUi\Controller\Provider\Competitor(),
     'admin/series'=> new RacingUi\Controller\Provider\Series(),

@@ -39,6 +39,8 @@ class BoatClass implements ControllerProviderInterface
                     }
                 });
 
+        $factory->post('/upload', 'boatclass.controller:upload');
+
         return $factory;
     }
 }

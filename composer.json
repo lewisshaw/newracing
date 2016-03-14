@@ -18,7 +18,8 @@
         "symfony/security-csrf": "^2.7",
         "symfony/security": "^2.7",
         "symfony/console": "^2.7",
-        "beberlei/assert": "^2.3"
+        "beberlei/assert": "^2.3",
+        "league/csv": "^8.0"
     },
     "autoload": {
         "psr-4": {

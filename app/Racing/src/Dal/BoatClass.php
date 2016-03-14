@@ -69,6 +69,30 @@ class BoatClass
         );
     }
 
+    public function getByName($boatClass)
+    {
+        $query = '
+            SELECT
+                bc.boatClassId, bc.name, pn.pyNumber
+            FROM
+                Racing.BoatClass AS bc
+            INNER JOIN
+                Racing.PyNumber AS pn
+            ON
+                bc.boatClassId = pn.boatClassId
+            WHERE
+                pn.active = 1
+            AND
+                bc.name = :boatClassName';
+
+        return $this->dbConn->fetchAssoc(
+            $query,
+            [
+                ':boatClassName' => $boatClass,
+            ]
+        );
+    }
+
     public function insert($name)
     {
         $query = '
@@ -77,7 +101,7 @@ class BoatClass
             ) VALUES (
                 :name
             )';
-        return $this->dbConn->executeQuery(
+        $this->dbConn->executeQuery(
             $query,
             [
                 ':name' => $name,
@@ -86,6 +110,8 @@ class BoatClass
                 ':name' => \PDO::PARAM_STR,
             ]
         );
+
+        return $this->dbConn->lastInsertId();
     }
 
     public function update($boatClassId, $name)
