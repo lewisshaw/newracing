@@ -94,7 +94,7 @@ class BoatClassController
     public function upload(Request $request)
     {
         $upload = $request->files->get('py-list-file');
-        $savedFile = $upload->move(__DIR__ . '../../../../../uploads/py/', $upload->getClientOriginalName());
+        $savedFile = $upload->move(__DIR__ . '/../../../../uploads/py/', $upload->getClientOriginalName());
         $reader = Reader::createFromPath($savedFile->getPathName());
         $rows = $reader->fetch();
         foreach ($rows as $row) {
