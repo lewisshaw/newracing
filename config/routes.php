@@ -11,4 +11,5 @@ return [
     'admin/races/{raceId}/unfinishedresults'=> new RacingUi\Controller\Provider\UnfinishedResult(),
     '/'=> new RacingUi\Controller\User\Provider\Home(),
     '/races/{raceId}/results/handicap'=> new RacingUi\Controller\User\Provider\HandicapResult(),
+    '/races/{raceId}/results/class' => new RacingUi\Controller\User\Provider\ClassResult(),
 ];

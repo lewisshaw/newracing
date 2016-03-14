@@ -23,7 +23,7 @@
       {% include "classresults/insert-update.twig" %}
     </div>
     <div role="tabpanel" class="tab-pane" id="add-non-finisher">
-      {% include "results/unfinished/insert-update.twig" with {'redirectUrl': 'admin/races/' ~ race.raceId ~ '/results/' ~ race.raceTypeHandle } %}
+      {% include "results/unfinished/insert-update.twig" with {'redirectUrl': 'admin/races/' ~ race.raceId ~ '/results/' ~ race.raceTypeHandle|lower } %}
     </div>
   </div>
   <h2>Results</h2>

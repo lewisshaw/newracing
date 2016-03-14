@@ -34,7 +34,7 @@ class Result implements ServiceProviderInterface
         });
 
         $app['results.handicap'] = $app->share(function () use ($app) {
-            return new \Racing\Results\Handicap($app['handicapresult.dal'], $app['unfinishedresult.dal']);
+            return new \Racing\Results\Handicap($app['handicapresult.dal'], $app['unfinishedresult.dal'], $app['race.dal']);
         });
 
         $app['results.class'] = $app->share(function () use ($app) {

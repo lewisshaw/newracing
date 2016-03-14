@@ -28,7 +28,7 @@ class ClassResult
         });
 
         $unfinishedResults = $this->unfinishedResultDal->getByRace($raceId);
-        $unfinishedPostion = count($results) + couunt($unfinishedResults) + 1;
+        $unfinishedPosition = count($results) + count($unfinishedResults) + 1;
         foreach ($unfinishedResults as &$result) {
             $result['position'] = $unfinishedPosition;
         }

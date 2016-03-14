@@ -5,25 +5,25 @@ use Silex\Application;
 use RacingUi\Session\SessionAlertsTrait;
 use Racing\Dal\HandicapResult;
 use Racing\Dal\UnfinishedResult;
-use Racing\Results\Handicap;
+use Racing\Results\ClassResult;
 
-class HandicapResultController
+class ClassResultController
 {
     use SessionAlertsTrait;
 
     private $templater;
     private $app;
-    private $handicapCalc;
+    private $classResult;
 
     public function __construct(
        $templater,
        Application $app,
-       Handicap $handicapResult
+       ClassResult $classResult
     ) {
 
-        $this->templater      = $templater;
-        $this->app            = $app;
-        $this->handicapResult = $handicapResult;
+        $this->templater   = $templater;
+        $this->app         = $app;
+        $this->classResult = $classResult;
     }
 
     public function index($raceId)
@@ -31,9 +31,9 @@ class HandicapResultController
         $errors = $this->getAndUnsetErrors();
         $message = $this->getAndUnsetMessages();
 
-        $results = $this->handicapResult->getSortedResults($raceId);
+        $results = $this->classResult->getSortedResults($raceId);
 
-        return $this->templater->render('user/handicapresult.twig', [
+        return $this->templater->render('user/classresults.twig', [
             'title' => 'Racing | Handicap Results',
             'errors' => $errors,
             'message' => $message,

@@ -3,16 +3,19 @@ namespace Racing\Results;
 
 use Racing\Dal\HandicapResult;
 use Racing\Dal\UnfinishedResult;
+use Racing\Dal\Race;
 
 class Handicap
 {
     private $handicapResultDal;
     private $unfinishedResultDal;
+    private $raceDal;
 
-    public function __construct(HandicapResult $handicapResultDal, UnfinishedResult $unfinishedResultDal)
+    public function __construct(HandicapResult $handicapResultDal, UnfinishedResult $unfinishedResultDal, Race $raceDal)
     {
         $this->handicapResultDal = $handicapResultDal;
         $this->unfinishedResultDal = $unfinishedResultDal;
+        $this->raceDal = $raceDal;
     }
 
     public function getRawResults($raceId)
@@ -23,9 +26,10 @@ class Handicap
     public function getSortedResults($raceId)
     {
         $results = $this->handicapResultDal->getByRace($raceId);
-        //put laps in here!!!
+        $race = $this->raceDal->get($raceId);
         foreach ($results as &$result) {
-            $result['correctedTime'] = round(bcdiv(bcmul($result['time'], 1000, 5), $result['pyNumber'], 5));
+            $timeAfterLaps = round(bcmul(bcdiv($result['time'], $result['laps'], 5), $race['laps'], 5));
+            $result['correctedTime'] = round(bcdiv(bcmul($timeAfterLaps, 1000, 5), $result['pyNumber'], 5));
         }
         unset($result);
         usort($results, function ($a, $b) {
