@@ -54,4 +54,9 @@ class ClassResult
         }
         return true;
     }
+
+    public function delete($resultId)
+    {
+        $this->classResultDal->delete($resultId);
+    }
 }

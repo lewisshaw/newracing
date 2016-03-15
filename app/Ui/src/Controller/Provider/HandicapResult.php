@@ -26,6 +26,8 @@ class HandicapResult implements ControllerProviderInterface
                 });
         $factory->get('/csv', 'handicapresult.controller:csv');
 
+        $factory->post('/{resultId}/delete', 'handicapresult.controller:delete');
+
         return $factory;
     }
 }

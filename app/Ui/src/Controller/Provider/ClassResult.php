@@ -26,6 +26,8 @@ class ClassResult implements ControllerProviderInterface
                 });
         $factory->get('/csv', 'classresult.controller:csv');
 
+        $factory->post('/{resultId}/delete', 'classresult.controller:delete');
+
         return $factory;
     }
 }

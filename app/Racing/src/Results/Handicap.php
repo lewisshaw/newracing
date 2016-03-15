@@ -73,4 +73,9 @@ class Handicap
 
         return true;
     }
+
+    public function delete($resultId)
+    {
+        $this->handicapResultDal->delete($resultId);
+    }
 }

@@ -30,7 +30,7 @@
   <table class="table">
     <thead>
       <tr>
-        <th>Sail Number</th><th>Helm</th><th>Crew</th><th>Class</th><th>Position</th>
+        <th>Sail Number</th><th>Helm</th><th>Crew</th><th>Class</th><th>Position</th><th></th>
       </tr>
     </thead>
     <tbody>
@@ -47,6 +47,18 @@
           </td>
           <td>{{ result.boatClassName }}</td>
           <td>{{ result.position is defined ? result.position : result.unfinishedTypeHandle }}</td>
+          <td>
+            <form method="post" action="
+            {% if result.position is defined %}
+              /admin/races/{{race.raceId}}/results/{{race.raceTypeHandle|lower}}/{{result.resultId}}/delete
+            {% else %}
+              /admin/races/{{race.raceId}}/unfinishedresults/{{result.resultId}}/delete
+            {% endif %}
+            ">
+            <input type="hidden" name="redirect_url" value="admin/races/{{ race.raceId }}/results/{{ race.raceTypeHandle|lower }}" />
+            <button type="submit" class="btn btn-primary">Delete</button>
+          </form>
+          </td>
         </tr>
       {% endfor %}
     </tbody>

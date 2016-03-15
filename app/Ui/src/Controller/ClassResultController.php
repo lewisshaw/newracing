@@ -94,4 +94,11 @@ class ClassResultController
         $this->app['session']->set('message', 'Result has been added');
         return $this->app->redirect('/admin/races/' . $raceId . '/results/class');
     }
+
+    public function delete($raceId, $resultId)
+    {
+        $this->classResult->delete($resultId);
+        $this->app['session']->set('message', 'Result has been deleted');
+        return $this->app->redirect('/admin/races/' . $raceId . '/results/class');
+    }
 }

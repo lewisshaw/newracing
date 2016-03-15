@@ -25,6 +25,8 @@ class UnfinishedResult implements ControllerProviderInterface
                     }
                 });
 
+        $factory->post('/{resultId}/delete', 'unfinishedresult.controller:delete');
+
         return $factory;
     }
 }

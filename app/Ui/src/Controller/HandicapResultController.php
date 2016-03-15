@@ -95,4 +95,11 @@ class HandicapResultController
         $this->app['session']->set('message', 'Result has been added');
         return $this->app->redirect('/admin/races/' . $raceId . '/results/handicap');
     }
+
+    public function delete($raceId, $resultId)
+    {
+        $this->handicapResult->delete($resultId);
+        $this->app['session']->set('message', 'Result has been deleted');
+        return $this->app->redirect('/admin/races/' . $raceId . '/results/handicap');
+    }
 }

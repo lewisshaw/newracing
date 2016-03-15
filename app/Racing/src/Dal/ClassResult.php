@@ -58,6 +58,38 @@ class ClassResult
         return $results;
     }
 
+    public function delete($resultId) {
+        $query = '
+            DELETE FROM
+                Racing.ResultCompetitor
+            WHERE
+                resultId = :resultId';
+        $this->dbConn->executeQuery(
+            $query,
+            [':resultId' => $resultId]
+        );
+
+        $query = '
+            DELETE FROM
+                Racing.ClassResult
+            WHERE
+                resultId = :resultId';
+        $this->dbConn->executeQuery(
+            $query,
+            [':resultId' => $resultId]
+        );
+
+        $query = '
+            DELETE FROM
+                Racing.Result
+            WHERE
+                resultId = :resultId';
+        $this->dbConn->executeQuery(
+            $query,
+            [':resultId' => $resultId]
+        );
+    }
+
     public function insert($raceId, $sailNumber, $boatClassId, $position, array $competitors)
     {
         $query = '

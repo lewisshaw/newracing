@@ -63,4 +63,11 @@ class UnfinishedResultController
         $this->app['session']->set('message', 'Result has been added');
         return $this->app->redirect('/' . $redirectUrl);
     }
+
+    public function delete($raceId, $resultId, Request $request)
+    {
+        $this->dal->delete($resultId);
+        $this->app['session']->set('message', 'Result has been deleted');
+        return $this->app->redirect('/' . $request->get('redirect_url'));
+    }
 }

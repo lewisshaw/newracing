@@ -67,6 +67,38 @@ class UnfinishedResult
         return $results;
     }
 
+    public function delete($resultId) {
+        $query = '
+            DELETE FROM
+                Racing.ResultCompetitor
+            WHERE
+                resultId = :resultId';
+        $this->dbConn->executeQuery(
+            $query,
+            [':resultId' => $resultId]
+        );
+
+        $query = '
+            DELETE FROM
+                Racing.UnfinishedResult
+            WHERE
+                resultId = :resultId';
+        $this->dbConn->executeQuery(
+            $query,
+            [':resultId' => $resultId]
+        );
+
+        $query = '
+            DELETE FROM
+                Racing.Result
+            WHERE
+                resultId = :resultId';
+        $this->dbConn->executeQuery(
+            $query,
+            [':resultId' => $resultId]
+        );
+    }
+
     public function insert($raceId, $sailNumber, $boatClassId, $unfinishedResultType, array $competitors)
     {
         $query = '
