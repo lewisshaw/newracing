@@ -116,12 +116,17 @@ class Series
     {
         $query = '
             SELECT
-                seriesId,
-                seriesName,
-                DATE_FORMAT(startDate, \'%Y-%m-%d\') AS startDate,
-                DATE_FORMAT(endDate, \'%Y-%m-%d\') AS endDate
+                s.seriesId,
+                s.seriesName,
+                DATE_FORMAT(s.startDate, \'%Y-%m-%d\') AS startDate,
+                DATE_FORMAT(s.endDate, \'%Y-%m-%d\') AS endDate,
+                sf.leagueFileName
             FROM
-                Racing.Series
+                Racing.Series AS s
+            LEFT JOIN
+                Racing.SeriesFile AS sf
+            ON
+                s.seriesId = sf.seriesId
             WHERE
                 startDate <= :date
             AND
@@ -139,12 +144,17 @@ class Series
     {
         $query = '
             SELECT
-                seriesId,
-                seriesName,
-                DATE_FORMAT(startDate, \'%Y-%m-%d\') AS startDate,
-                DATE_FORMAT(endDate, \'%Y-%m-%d\') AS endDate
+                s.seriesId,
+                s.seriesName,
+                DATE_FORMAT(s.startDate, \'%Y-%m-%d\') AS startDate,
+                DATE_FORMAT(s.endDate, \'%Y-%m-%d\') AS endDate,
+                sf.leagueFileName
             FROM
-                Racing.Series
+                Racing.Series AS s
+            LEFT JOIN
+                Racing.SeriesFile AS sf
+            ON
+                s.seriesId = sf.seriesId
             WHERE
                 endDate < :date
             ORDER BY

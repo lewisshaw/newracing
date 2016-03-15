@@ -28,7 +28,13 @@
           <td>
             <form action="/admin/series/files" method="post" class="form-inline" enctype="multipart/form-data">
               <div class="form-group" >
-                <span style="font-weight: bold" class="file-name-display" id="file-name-display">{{ seriesRow.leagueFileName|length > 0 ? seriesRow.leagueFileName : 'Not yet set'}}</span>
+                <span style="font-weight: bold" class="file-name-display" id="file-name-display">
+                  {% if seriesRow.leagueFileName|length > 0 %}
+                    <a target="_blank" href="/league-tables/{{ seriesRow.leagueFileName }}">{{seriesRow.leagueFileName}}</a>
+                  {% else %}
+                    Not yet set
+                  {% endif %}
+                </span>
                 <label class="btn btn-primary" for="league-table-file-{{seriesRow.seriesId}}">Browse
                   <input type="file" name="league-table-file" class="form-control  league-table-file" id="league-table-file-{{seriesRow.seriesId}}" style="display:none"/>
                 </label>
