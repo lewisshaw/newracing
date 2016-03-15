@@ -19,6 +19,14 @@ class Series implements ServiceProviderInterface
         $app['series.validator']     = $app->share(function () use ($app) {
             return new \RacingUi\Validator\Series($app['validator']);
         });
+
+        $app['seriesfile.dal'] = $app->share(function () use ($app) {
+            return new \Racing\Dal\SeriesFile($app['db']);
+        });
+
+        $app['seriesfile.controller'] = $app->share(function () use ($app) {
+            return new \RacingUi\Controller\SeriesFileController($app, $app['seriesfile.dal']);
+        });
     }
 
     public function boot(Application $app)

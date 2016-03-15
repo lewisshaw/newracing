@@ -17,7 +17,7 @@
   <h2>All Series</h2>
   <table class ="table">
     <thead>
-      <th>Name</th><th>Start Date</th><th>End Date</th><th></th><th></th>
+      <th>Name</th><th>Start Date</th><th>End Date</th><th>League Table</th><th></th><th></th>
     </thead>
     <tbody>
       {% for seriesRow in series %}
@@ -25,6 +25,20 @@
           <td>{{ seriesRow.seriesName }}</td>
           <td>{{ seriesRow.startDate }}</td>
           <td>{{ seriesRow.endDate }}</td>
+          <td>
+            <form action="/admin/series/files" method="post" class="form-inline" enctype="multipart/form-data">
+              <div class="form-group" >
+                <span style="font-weight: bold" class="file-name-display" id="file-name-display">{{ seriesRow.leagueFileName|length > 0 ? seriesRow.leagueFileName : 'Not yet set'}}</span>
+                <label class="btn btn-primary" for="league-table-file-{{seriesRow.seriesId}}">Browse
+                  <input type="file" name="league-table-file" class="form-control  league-table-file" id="league-table-file-{{seriesRow.seriesId}}" style="display:none"/>
+                </label>
+              </div>
+              <input type="hidden" name="series-id" value="{{seriesRow.seriesId}}" />
+              <button type="submit" class="btn btn-default">
+                Upload
+              </button>
+            </form>
+          </td>
           <td>
             <a href="/admin/series/{{ seriesRow.seriesId }}/edit">
               <button class="btn btn-primary">Edit Series</button>
@@ -39,4 +53,11 @@
       {% endfor %}
     </tbody>
   </table>
+{% endblock %}
+{% block scripts %}
+  <script type="text/javascript">
+    $('.league-table-file').change( function (){
+      $(this).parent().parent().children('.file-name-display').html($(this)[0].files[0].name);
+    });
+  </script>
 {% endblock %}

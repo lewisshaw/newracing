@@ -39,6 +39,8 @@ class Series implements ControllerProviderInterface
                     }
                 });
 
+        $factory->post('/files', 'seriesfile.controller:upload');
+
         return $factory;
     }
 }

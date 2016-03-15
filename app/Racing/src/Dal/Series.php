@@ -16,12 +16,17 @@ class Series
     {
         $query = '
             SELECT
-                seriesId,
-                seriesName,
-                DATE_FORMAT(startDate, \'%D %M %Y\') AS startDate,
-                DATE_FORMAT(endDate, \'%D %M %Y\') AS endDate
+                s.seriesId,
+                s.seriesName,
+                DATE_FORMAT(s.startDate, \'%D %M %Y\') AS startDate,
+                DATE_FORMAT(s.endDate, \'%D %M %Y\') AS endDate,
+                sf.leagueFileName
             FROM
-                Racing.Series
+                Racing.Series AS s
+            LEFT JOIN
+                Racing.SeriesFile AS sf
+            ON
+                s.seriesId = sf.seriesId
             ORDER BY
                 startDate DESC, seriesName';
 
