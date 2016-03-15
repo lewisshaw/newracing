@@ -18,7 +18,8 @@ class HandicapResult implements ServiceProviderInterface
                 $app,
                 $app['lookup.result'],
                 $app['race.dal'],
-                $app['results.handicap']
+                $app['results.handicap'],
+                $app['results.csv']
             );
         });
 

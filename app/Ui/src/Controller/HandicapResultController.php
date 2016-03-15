@@ -5,10 +5,10 @@ use Racing\Dal\Race;
 use Racing\Lookup\Result;
 use Racing\Results\Handicap;
 use RacingUi\Session\SessionAlertsTrait;
+use Racing\Results\Csv;
 use Silex\Application;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use League\Csv\Writer;
 
 class HandicapResultController
 {
@@ -20,13 +20,15 @@ class HandicapResultController
     private $resultLookup;
     private $raceDal;
     private $handicapResult;
+    private $resultsCsv;
 
     public function __construct(
        $templater,
        Application $app,
        Result $resultLookup,
        Race $raceDal,
-       Handicap $handicapResult
+       Handicap $handicapResult,
+       Csv $resultsCsv
     ) {
 
         $this->templater        = $templater;
@@ -34,6 +36,7 @@ class HandicapResultController
         $this->raceDal          = $raceDal;
         $this->handicapResult   = $handicapResult;
         $this->resultLookup     = $resultLookup;
+        $this->resultsCsv       = $resultsCsv;
     }
 
     public function index(Request $request, $raceId)
@@ -62,23 +65,10 @@ class HandicapResultController
     {
         $results = $this->handicapResult->getSortedResults($raceId);
         $race    = $this->raceDal->get($raceId);
-        $file    = new \SplFileObject('php://temp', 'w');
-        $writer = Writer::createFromFileObject($file);
-        $writer->insertOne(['SailNo', 'Class', 'HelmName', 'RaceNo', 'Place', 'Code']);
-        foreach ($results as $result) {
-            $row = [$result['sailNumber'], $result['boatClassName'], $result['helm'], date('d/m/Y', strtotime($race['date'])), $result['position']];
-            if (isset($result['unfinishedResultHandle'])) {
-                $row[] = $result['unfinishedResultHandle'];
-            }
-            else {
-                $row[] = '';
-            }
 
-            $writer->insertOne($row);
-        }
         $filename = 'sailwave-results-' . date('d-m-Y-i:j:s');
         return new Response(
-            $writer->__toString(),
+            $this->resultsCsv->getCsvString($results, $race),
             200,
             [
                 'Content-Type' => 'text/csv',

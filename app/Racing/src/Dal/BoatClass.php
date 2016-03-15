@@ -83,7 +83,7 @@ class BoatClass
             WHERE
                 pn.active = 1
             AND
-                bc.name = :boatClassName';
+                UPPER(bc.name) = UPPER(:boatClassName)';
 
         return $this->dbConn->fetchAssoc(
             $query,

@@ -44,6 +44,10 @@ class Result implements ServiceProviderInterface
         $app['lookup.result'] = $app->share(function () use ($app) {
             return new \Racing\Lookup\Result($app['competitor.dal'], $app['boatclass.dal']);
         });
+
+        $app['results.csv'] = $app->share(function () use ($app) {
+            return new \Racing\Results\Csv();
+        });
     }
 
     public function boot(Application $app)

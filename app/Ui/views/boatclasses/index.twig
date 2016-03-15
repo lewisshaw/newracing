@@ -12,6 +12,14 @@
   {% include "partials/message.twig" %}
   {% include "boatclasses/insert-update.twig" with {'formClass': 'form-inline'} %}
   <h3>Upload RYA CSV</h3>
+  <div class="panel panel-default">
+  <div class="panel-heading">
+    <h3 class="panel-title">File Format</h3>
+  </div>
+  <div class="panel-body">
+    The CSV file should be in the column format provided by the RYA, but all the extra data needs to be removed. There should be no headers or extra information in the file. The file can be downloaded as an xlsx from the RYA website, and then opened in excel to remove the extra rows. Once the file is just the required data and no headers, save it as a CSV and then upload it.
+  </div>
+</div>
 <form action="/admin/boatclasses/upload" method="post" class="form-inline" enctype="multipart/form-data">
   <div class="form-group" >
     <span style="font-weight: bold" id="file-name-display">No file selected</span>

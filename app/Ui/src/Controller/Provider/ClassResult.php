@@ -24,6 +24,7 @@ class ClassResult implements ControllerProviderInterface
                         return new RedirectResponse('/admin/races/' . $raceId . '/results/class');
                     }
                 });
+        $factory->get('/csv', 'classresult.controller:csv');
 
         return $factory;
     }

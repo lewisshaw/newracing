@@ -6,10 +6,12 @@ use Racing\Dal\BoatClass;
 use Racing\Dal\Competitor;
 use Racing\Dal\Race;
 use Racing\Dal\UnfinishedResult;
+use Racing\Results\Csv;
 use Racing\Lookup\Result;
 use RacingUi\Session\SessionAlertsTrait;
 use Silex\Application;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 class ClassResultController
 {
@@ -19,13 +21,15 @@ class ClassResultController
     private $app;
     private $resultLookup;
     private $raceDal;
+    private $resutsCsv;
 
     public function __construct(
        $templater,
        Application $app,
        ClassResult $classResult,
        Result $resultLookup,
-       Race $raceDal
+       Race $raceDal,
+       Csv $resultsCsv
     ) {
 
         $this->templater    = $templater;
@@ -33,6 +37,7 @@ class ClassResultController
         $this->classResult  = $classResult;
         $this->resultLookup = $resultLookup;
         $this->raceDal      = $raceDal;
+        $this->resultsCsv   = $resultsCsv;
     }
 
     public function index(Request $request, $raceId)
@@ -55,6 +60,22 @@ class ClassResultController
             'competitors' => $competitors,
             'race'        => $race,
         ]);
+    }
+
+    public function csv(Request $request, $raceId)
+    {
+        $results = $this->classResult->getSortedResults($raceId);
+        $race    = $this->raceDal->get($raceId);
+
+        $filename = 'sailwave-results-' . date('d-m-Y-i:j:s');
+        return new Response(
+            $this->resultsCsv->getCsvString($results, $race),
+            200,
+            [
+                'Content-Type' => 'text/csv',
+                'Content-Disposition' => "attachment;filename=$filename.csv",
+            ]
+        );
     }
 
     public function insert(Request $request, $raceId)

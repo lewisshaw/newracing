@@ -12,8 +12,31 @@
   {% include "partials/errors.twig" %}
   {% include "partials/message.twig" %}
   {% include "races/insert-update.twig" %}
-
+  <div style="margin-top:20px" class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+    <div class="panel panel-default">
+    <div class="panel-heading" role="tab" id="headingThree">
+      <h4 class="panel-title">
+        <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+          Importing to Sailwave Guide - Expand
+        </a>
+      </h4>
+    </div>
+    <div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
+      <div class="panel-body">
+        <ol>
+          <li>Once a race is published, there will be a link to download a CSV for sailwave</li>
+          <li>Download this file, and then open the series that needs to be updated in sailwave</li>
+          <li>Go to "file - import results from csv" in sailwave, and select the downloaded file</li>
+          <li>Sailwave will show you the fieldnames, click next</li>
+          <li>Now you will see the field mappings, click the button to allow sailwave to guess field mappings</li>
+          <li>Sailwave will guess them all correctly, and then just click next and they will be imported</li>
+        </ol>
+      </div>
+    </div>
+  </div>
+</div>
   <h2>Races</h2>
+
   <table class="table">
     <thead>
       <th>Type</th><th>Name</th><th>Date</th><th></th><th></th><th></th>
