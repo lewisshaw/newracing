@@ -15,6 +15,8 @@ class Twig implements ServiceProviderInterface
                 $twig->addGlobal('user', ['name' => (string) $user]);
             }
 
+            $twig->addExtension(new \RacingUi\TwigExtension($app));
+
             return $twig;
         }));
     }

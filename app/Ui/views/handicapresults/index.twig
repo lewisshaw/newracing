@@ -51,7 +51,7 @@
           </td>
           <td>{{ result.boatClassName }}</td>
           <td>{{ result.laps is defined ? result.laps : result.unfinishedTypeHandle }}</td>
-          <td>{{ result.time is defined ? result.time : result.unfinishedTypeHandle }}</td>
+          <td>{{ result.time is defined ? result.time|secsToMins : result.unfinishedTypeHandle }}</td>
         </tr>
       {% endfor %}
     </tbody>
