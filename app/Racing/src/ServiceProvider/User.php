@@ -13,11 +13,11 @@ class User implements ServiceProviderInterface
         });
 
         $app['user.handicap.controller'] = $app->share(function () use ($app) {
-            return new \RacingUi\Controller\User\HandicapResultController($app['twig'], $app, $app['results.handicap']);
+            return new \RacingUi\Controller\User\HandicapResultController($app['twig'], $app, $app['results.handicap'], $app['race.dal']);
         });
 
         $app['user.class.controller'] = $app->share(function () use ($app) {
-            return new \RacingUi\Controller\User\ClassResultController($app['twig'], $app, $app['results.class']);
+            return new \RacingUi\Controller\User\ClassResultController($app['twig'], $app, $app['results.class'], $app['race.dal']);
         });
     }
 

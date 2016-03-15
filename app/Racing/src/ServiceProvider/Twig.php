@@ -13,6 +13,7 @@ class Twig implements ServiceProviderInterface
             if (null !== $token) {
                 $user = $token->getUser();
                 $twig->addGlobal('user', ['name' => (string) $user]);
+                $twig->addGlobal('dateFormat', 'jS F Y');
             }
 
             $twig->addExtension(new \RacingUi\TwigExtension($app));
