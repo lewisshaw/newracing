@@ -9,4 +9,5 @@ Vagrant.configure(2) do |config|
   config.vm.box = "scotch/box"
   config.vm.network "forwarded_port", guest: 80, host: 8080
   config.vm.synced_folder ".", "/var/www", :mount_options => ["dmode=777", "fmode=666"]
+  config.vm.boot_timeout = 500
 end
