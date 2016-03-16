@@ -15,7 +15,7 @@ class Result implements ServiceProviderInterface
 
         $app['unfinishedresult.dal'] = $app->share(function () use ($app) {
             $unfinishedResultType = new \Racing\Dal\UnfinishedResultType($app['db']);
-            return new \Racing\Dal\UnfinishedResult($app['db'], $app['resultcompetitor.dal'], $unfinishedResultType);
+            return new \Racing\Dal\UnfinishedResult($app['db'], $app['resultcompetitor.dal'], $unfinishedResultType, $app['result.dal']);
         });
 
         $app['unfinishedresult.controller'] = $app->share(function () use ($app) {
@@ -27,6 +27,10 @@ class Result implements ServiceProviderInterface
                 $app['competitor.dal'],
                 $app['race.dal']
             );
+        });
+
+        $app['result.dal'] = $app->share(function () use ($app) {
+            return new \Racing\Dal\Result($app['db']);
         });
 
         $app['unfinishedresult.validator'] = $app->share(function () use ($app) {

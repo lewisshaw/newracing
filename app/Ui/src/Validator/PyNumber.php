@@ -1,14 +1,14 @@
 <?php
 namespace RacingUi\Validator;
 
-use Symfony\Component\Validator\ValidatorInterface;
+use Symfony\Component\Validator\ValidatorInterface as SymfonyValidatorInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 
-class PyNumber
+class PyNumber implements ValidatorInterface
 {
     private $validator;
 
-    public function __construct(ValidatorInterface $validator)
+    public function __construct(SymfonyValidatorInterface $validator)
     {
         $this->validator = $validator;
     }

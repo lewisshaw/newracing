@@ -3,8 +3,7 @@ namespace RacingUi\Controller\Provider;
 
 use Silex\Application;
 use Silex\ControllerProviderInterface;
-use Symfony\Component\HttpFoundation\RedirectResponse;
-use Symfony\Component\HttpFoundation\Request;
+use RacingUi\Middleware\Validator;
 
 class HandicapResult implements ControllerProviderInterface
 {
@@ -14,16 +13,7 @@ class HandicapResult implements ControllerProviderInterface
 
         $factory->get('/', 'handicapresult.controller:index');
         $factory->post('/', 'handicapresult.controller:insert')
-                ->before(function (Request $request) use ($app) {
-                    $validator = $app['handicapresult.validator'];
-                    $errors = $validator->validate($request->request->all());
-                    if(count($errors))
-                    {
-                        $raceId = $request->get('raceId');
-                        $app['session']->set('errors', $errors);
-                        return new RedirectResponse('/admin/races/' . $raceId . '/results/handicap');
-                    }
-                });
+                ->before(Validator::getCallback($app['handicapresult.validator'], $app));
         $factory->get('/csv', 'handicapresult.controller:csv');
 
         $factory->post('/{resultId}/delete', 'handicapresult.controller:delete');

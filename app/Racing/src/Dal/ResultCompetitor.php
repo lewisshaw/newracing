@@ -72,4 +72,17 @@ class ResultCompetitor
             ]
         );
     }
+
+    public function deleteByResult($resultId)
+    {
+        $query = '
+            DELETE FROM
+                Racing.ResultCompetitor
+            WHERE
+                resultId = :resultId';
+        return $this->dbConn->executeQuery(
+            $query,
+            [':resultId' => $resultId]
+        );
+    }
 }

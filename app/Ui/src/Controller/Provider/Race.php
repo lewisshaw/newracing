@@ -3,8 +3,7 @@ namespace RacingUi\Controller\Provider;
 
 use Silex\Application;
 use Silex\ControllerProviderInterface;
-use Symfony\Component\HttpFoundation\RedirectResponse;
-use Symfony\Component\HttpFoundation\Request;
+use RacingUi\Middleware\Validator;
 
 class Race implements ControllerProviderInterface
 {
@@ -14,16 +13,7 @@ class Race implements ControllerProviderInterface
 
         $factory->get('/', 'race.controller:index');
         $factory->post('/', 'race.controller:insert')
-                ->before(function (Request $request) use ($app) {
-                    $validator = $app['race.validator'];
-                    $errors = $validator->validate($request->request->all());
-                    if(count($errors))
-                    {
-                        $seriesId = $request->get('seriesId');
-                        $app['session']->set('errors', $errors);
-                        return new RedirectResponse('/admin/series/' . $seriesId . '/races');
-                    }
-                });
+                ->before(Validator::getCallback($app['race.validator'], $app));
 
         $factory->post('/{raceId}/publish', 'race.controller:publish')
                 ->assert('raceId', '\d+');

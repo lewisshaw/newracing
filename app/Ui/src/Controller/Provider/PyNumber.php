@@ -3,8 +3,7 @@ namespace RacingUi\Controller\Provider;
 
 use Silex\Application;
 use Silex\ControllerProviderInterface;
-use Symfony\Component\HttpFoundation\RedirectResponse;
-use Symfony\Component\HttpFoundation\Request;
+use RacingUi\Middleware\Validator;
 
 class PyNumber implements ControllerProviderInterface
 {
@@ -14,16 +13,7 @@ class PyNumber implements ControllerProviderInterface
 
         $factory->get('/', 'pynumber.controller:index');
         $factory->post('/', 'pynumber.controller:insert')
-                ->before(function (Request $request) use ($app) {
-                    $validator = $app['pynumber.validator'];
-                    $errors = $validator->validate($request->request->all());
-                    if(count($errors))
-                    {
-                        $app['session']->set('errors', $errors);
-                        $boatClassId = $request->get('boatClassId');
-                        return new RedirectResponse('/admin/boatclasses/' . $boatClassId . '/pynumbers');
-                    }
-                });
+                ->before(Validator::getCallback($app['pynumber.validator'], $app));
 
         return $factory;
     }

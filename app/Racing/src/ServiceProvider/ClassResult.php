@@ -9,7 +9,7 @@ class ClassResult implements ServiceProviderInterface
     public function register(Application $app)
     {
         $app['classresult.dal'] = $app->share(function () use ($app) {
-            return new \Racing\Dal\ClassResult($app['db'], $app['resultcompetitor.dal']);
+            return new \Racing\Dal\ClassResult($app['db'], $app['resultcompetitor.dal'], $app['result.dal']);
         });
 
         $app['classresult.controller'] = $app->share(function () use ($app) {

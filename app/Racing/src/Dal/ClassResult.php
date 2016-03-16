@@ -7,11 +7,13 @@ class ClassResult
 {
     private $dbConn;
     private $resultCompetitor;
+    private $result;
 
-    public function __construct(Connection $dbConn, ResultCompetitor $resultCompetitor)
+    public function __construct(Connection $dbConn, ResultCompetitor $resultCompetitor, Result $result)
     {
         $this->dbConn = $dbConn;
         $this->resultCompetitor = $resultCompetitor;
+        $this->result = $result;
     }
 
     public function getByRace($raceId)
@@ -61,16 +63,6 @@ class ClassResult
     public function delete($resultId) {
         $query = '
             DELETE FROM
-                Racing.ResultCompetitor
-            WHERE
-                resultId = :resultId';
-        $this->dbConn->executeQuery(
-            $query,
-            [':resultId' => $resultId]
-        );
-
-        $query = '
-            DELETE FROM
                 Racing.ClassResult
             WHERE
                 resultId = :resultId';
@@ -79,38 +71,14 @@ class ClassResult
             [':resultId' => $resultId]
         );
 
-        $query = '
-            DELETE FROM
-                Racing.Result
-            WHERE
-                resultId = :resultId';
-        $this->dbConn->executeQuery(
-            $query,
-            [':resultId' => $resultId]
-        );
+        $this->resultCompetitor->deleteByResult($resultId);
+
+        $this->result->delete($resultId);
     }
 
     public function insert($raceId, $sailNumber, $boatClassId, $position, array $competitors)
     {
-        $query = '
-            INSERT INTO
-                Racing.Result (raceId, sailNumber)
-            VALUES
-                (:raceId, :sailNumber)';
-
-        $this->dbConn->executeQuery(
-            $query,
-            [
-                ':raceId'     => $raceId,
-                ':sailNumber' => $sailNumber,
-            ],
-            [
-                ':raceId'     => \PDO::PARAM_INT,
-                ':sailNumber' => \PDO::PARAM_INT,
-            ]
-        );
-
-        $resultId = $this->dbConn->lastInsertId();
+        $resultId = $this->result->insert($raceId, $sailNumber);
 
         $this->addClassResult($resultId, $boatClassId, $position);
         $this->resultCompetitor->addCompetitor($resultId, $competitors['helm'], 'HELM');

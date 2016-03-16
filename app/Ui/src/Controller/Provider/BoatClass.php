@@ -3,8 +3,7 @@ namespace RacingUi\Controller\Provider;
 
 use Silex\Application;
 use Silex\ControllerProviderInterface;
-use Symfony\Component\HttpFoundation\RedirectResponse;
-use Symfony\Component\HttpFoundation\Request;
+use RacingUi\Middleware\Validator;
 
 class BoatClass implements ControllerProviderInterface
 {
@@ -14,30 +13,13 @@ class BoatClass implements ControllerProviderInterface
 
         $factory->get('/', 'boatclass.controller:index');
         $factory->post('/', 'boatclass.controller:insert')
-                ->before(function (Request $request) use ($app) {
-                    $validator = $app['boatclass.validator'];
-                    $errors = $validator->validate($request->request->all());
-                    if(count($errors))
-                    {
-                        $app['session']->set('errors', $errors);
-                        return new RedirectResponse('/admin/boatclasses');
-                    }
-                });
+                ->before(Validator::getCallback($app['boatclass.validator'], $app));
 
         $factory->get('/{boatClassId}/edit', 'boatclass.controller:edit')
                 ->assert('boatClassId', '\d+');
         $factory->post('/{boatClassId}/update', 'boatclass.controller:update')
                 ->assert('boatClassId', '\d+')
-                ->before(function (Request $request) use ($app) {
-                    $validator = $app['boatclass.validator'];
-                    $errors = $validator->validate($request->request->all());
-                    if(count($errors))
-                    {
-                        $boatClassId = $request->get('boatClassId');
-                        $app['session']->set('errors', $errors);
-                        return new RedirectResponse('/admin/boatclasses/' . $boatClassId . '/edit');
-                    }
-                });
+                ->before(Validator::getCallback($app['boatclass.validator'], $app));
 
         $factory->post('/upload', 'boatclass.controller:upload');
 

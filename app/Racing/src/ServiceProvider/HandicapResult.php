@@ -9,7 +9,7 @@ class HandicapResult implements ServiceProviderInterface
     public function register(Application $app)
     {
         $app['handicapresult.dal'] = $app->share(function () use ($app) {
-            return new \Racing\Dal\HandicapResult($app['db'], $app['resultcompetitor.dal']);
+            return new \Racing\Dal\HandicapResult($app['db'], $app['resultcompetitor.dal'], $app['result.dal']);
         });
 
         $app['handicapresult.controller'] = $app->share(function () use ($app) {

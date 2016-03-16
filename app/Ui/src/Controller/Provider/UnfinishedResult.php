@@ -3,8 +3,7 @@ namespace RacingUi\Controller\Provider;
 
 use Silex\Application;
 use Silex\ControllerProviderInterface;
-use Symfony\Component\HttpFoundation\RedirectResponse;
-use Symfony\Component\HttpFoundation\Request;
+use RacingUi\Middleware\Validator;
 
 class UnfinishedResult implements ControllerProviderInterface
 {
@@ -13,17 +12,7 @@ class UnfinishedResult implements ControllerProviderInterface
         $factory = $app['controllers_factory'];
 
         $factory->post('/', 'unfinishedresult.controller:insert')
-                ->before(function (Request $request) use ($app) {
-                    $validator = $app['unfinishedresult.validator'];
-                    $errors = $validator->validate($request->request->all());
-                    if(count($errors))
-                    {
-                        $raceId = $request->get('raceId');
-                        $redirectUrl = $request->get('redirect_url');
-                        $app['session']->set('errors', $errors);
-                        return new RedirectResponse('/' . $redirectUrl);
-                    }
-                });
+                ->before(Validator::getCallback($app['unfinishedresult.validator'], $app));
 
         $factory->post('/{resultId}/delete', 'unfinishedresult.controller:delete');
 
