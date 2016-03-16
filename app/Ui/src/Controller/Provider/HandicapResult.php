@@ -18,6 +18,8 @@ class HandicapResult implements ControllerProviderInterface
 
         $factory->post('/{resultId}/delete', 'handicapresult.controller:delete');
 
+        $factory->get('/preview', 'user.handicap.controller:index');
+
         return $factory;
     }
 }

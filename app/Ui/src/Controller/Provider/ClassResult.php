@@ -18,6 +18,8 @@ class ClassResult implements ControllerProviderInterface
 
         $factory->post('/{resultId}/delete', 'classresult.controller:delete');
 
+        $factory->get('/preview', 'user.class.controller:index');
+
         return $factory;
     }
 }
