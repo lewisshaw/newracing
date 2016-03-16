@@ -17,7 +17,6 @@ class HandicapResult implements ServiceProviderInterface
                 $app['twig'],
                 $app,
                 $app['lookup.result'],
-                $app['race.dal'],
                 $app['results.handicap'],
                 $app['results.csv']
             );
