@@ -88,4 +88,26 @@ class SeriesController
         $this->app['session']->set('message', 'Series has been updated');
         return $this->app->redirect('/admin/series');
     }
+
+    public function publish($seriesId)
+    {
+        if (!$this->dal->setPublished($seriesId, 1))
+        {
+            $this->app['session']->set('errors', ['Series could not be published, please retry']);
+            return $this->app->redirect('/admin/series');
+        }
+        $this->app['session']->set('message', 'Series has been published');
+        return $this->app->redirect('/admin/series');
+    }
+
+    public function unPublish($seriesId)
+    {
+        if (!$this->dal->setPublished($seriesId, 0))
+        {
+            $this->app['session']->set('errors', ['Series could not be un-published, please retry']);
+            return $this->app->redirect('/admin/series');
+        }
+        $this->app['session']->set('message', 'Series has been un-published');
+        return $this->app->redirect('/admin/series');
+    }
 }

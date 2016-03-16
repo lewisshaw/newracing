@@ -17,7 +17,7 @@
   <h2>All Series</h2>
   <table class ="table">
     <thead>
-      <th>Name</th><th>Start Date</th><th>End Date</th><th>League Table</th><th></th><th></th>
+      <th>Name</th><th>Start Date</th><th>End Date</th><th>League Table</th><th></th><th></th><th></th>
     </thead>
     <tbody>
       {% for seriesRow in series %}
@@ -44,6 +44,25 @@
                 Upload
               </button>
             </form>
+          </td>
+          <td>
+            {% if seriesRow.isPublished == true %}
+              {% include "series/publish.twig" with
+                {
+                  'publishAction': 'unpublish',
+                  'publishClass': 'btn-danger',
+                  'publishText': 'Un-publish'
+                }
+              %}
+            {% else %}
+              {% include "series/publish.twig" with
+                {
+                  'publishAction': 'publish',
+                  'publishClass': 'btn-success',
+                  'publishText': 'Publish'
+                }
+              %}
+            {% endif %}
           </td>
           <td>
             <a href="/admin/series/{{ seriesRow.seriesId }}/edit">

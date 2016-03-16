@@ -20,7 +20,8 @@ class Series
                 s.seriesName,
                 DATE_FORMAT(s.startDate, \'%D %M %Y\') AS startDate,
                 DATE_FORMAT(s.endDate, \'%D %M %Y\') AS endDate,
-                sf.leagueFileName
+                sf.leagueFileName,
+                s.isPublished
             FROM
                 Racing.Series AS s
             LEFT JOIN
@@ -112,6 +113,29 @@ class Series
         );
     }
 
+    public function setPublished($seriesId, $published)
+    {
+        $query = '
+            UPDATE
+                Racing.Series
+            SET
+                isPublished = :isPublished
+            WHERE
+                seriesId = :seriesId';
+
+        return $this->dbConn->executeQuery(
+            $query,
+            [
+                ':isPublished' => $published,
+                ':seriesId'    => $seriesId,
+            ],
+            [
+                ':isPublished' => \PDO::PARAM_BOOL,
+                ':seriesId'    => \PDO::PARAM_INT,
+            ]
+        );
+    }
+
     public function getByDate($date)
     {
         $query = '
@@ -130,7 +154,9 @@ class Series
             WHERE
                 startDate <= :date
             AND
-                endDate >= :date';
+                endDate >= :date
+            AND
+                s.isPublished = 1';
 
         return $this->dbConn->fetchAll(
             $query,
@@ -157,6 +183,8 @@ class Series
                 s.seriesId = sf.seriesId
             WHERE
                 endDate < :date
+            AND
+                s.isPublished = 1
             ORDER BY
                 endDate desc';
 

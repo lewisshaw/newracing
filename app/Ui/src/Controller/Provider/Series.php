@@ -39,6 +39,11 @@ class Series implements ControllerProviderInterface
                     }
                 });
 
+        $factory->post('/{seriesId}/publish', 'series.controller:publish')
+                ->assert('seriesId', '\d+');
+        $factory->post('/{seriesId}/unpublish', 'series.controller:unPublish')
+                ->assert('seriesId', '\d+');
+
         $factory->post('/files', 'seriesfile.controller:upload');
 
         return $factory;

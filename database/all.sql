@@ -162,3 +162,5 @@ CREATE TABLE Racing.SeriesFile (
     PRIMARY KEY (leagueFileId),
     FOREIGN KEY (seriesId) REFERENCES Racing.Series (seriesId)
 )ENGINE=InnoDB;
+
+ALTER TABLE Racing.Series ADD COLUMN isPublished tinyint(1) NOT NULL DEFAULT 0 AFTER seriesName;
