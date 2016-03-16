@@ -15,19 +15,16 @@ class ClassResultController
     private $templater;
     private $app;
     private $classResult;
-    private $raceDal;
 
     public function __construct(
        $templater,
        Application $app,
-       ClassResult $classResult,
-       Race $raceDal
+       ClassResult $classResult
     ) {
 
         $this->templater   = $templater;
         $this->app         = $app;
         $this->classResult = $classResult;
-        $this->raceDal     = $raceDal;
     }
 
     public function index($raceId)
@@ -35,8 +32,9 @@ class ClassResultController
         $errors = $this->getAndUnsetErrors();
         $message = $this->getAndUnsetMessages();
 
-        $results = $this->classResult->getSortedResults($raceId);
-        $race = $this->raceDal->get($raceId);
+        $raceResults = $this->classResult->getSortedResults($raceId);
+        $results = $raceResults->getResults();
+        $race = $raceResults->getRace();
 
         return $this->templater->render('user/classresults.twig', [
             'title' => 'Racing | Handicap Results',

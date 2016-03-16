@@ -42,7 +42,7 @@ class Result implements ServiceProviderInterface
         });
 
         $app['results.class'] = $app->share(function () use ($app) {
-            return new \Racing\Results\ClassResult($app['classresult.dal'], $app['unfinishedresult.dal']);
+            return new \Racing\Results\ClassResult($app['classresult.dal'], $app['unfinishedresult.dal'], $app['race.dal']);
         });
 
         $app['lookup.result'] = $app->share(function () use ($app) {

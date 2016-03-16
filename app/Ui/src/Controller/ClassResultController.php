@@ -19,8 +19,8 @@ class ClassResultController
 
     private $templater;
     private $app;
+    private $classResult;
     private $resultLookup;
-    private $raceDal;
     private $resutsCsv;
 
     public function __construct(
@@ -28,7 +28,6 @@ class ClassResultController
        Application $app,
        ClassResult $classResult,
        Result $resultLookup,
-       Race $raceDal,
        Csv $resultsCsv
     ) {
 
@@ -36,7 +35,6 @@ class ClassResultController
         $this->app          = $app;
         $this->classResult  = $classResult;
         $this->resultLookup = $resultLookup;
-        $this->raceDal      = $raceDal;
         $this->resultsCsv   = $resultsCsv;
     }
 
@@ -45,10 +43,11 @@ class ClassResultController
         $errors = $this->getAndUnsetErrors();
         $message = $this->getAndUnsetMessages();
 
-        $results = $this->classResult->getRawResults($raceId);
+        $raceResults = $this->classResult->getRawResults($raceId);
+        $results = $raceResults->getResults();
+        $race = $raceResults->getRace();
         $boatClasses = $this->resultLookup->getBoatClasses();
         $competitors = $this->resultLookup->getCompetitors();
-        $race        = $this->raceDal->get($raceId);
 
         return $this->templater->render('classresults/index.twig', [
             'title' => 'Racing | Class Results',
@@ -64,8 +63,9 @@ class ClassResultController
 
     public function csv(Request $request, $raceId)
     {
-        $results = $this->classResult->getSortedResults($raceId);
-        $race    = $this->raceDal->get($raceId);
+        $raceResults = $this->classResult->getSortedResults($raceId);
+        $results = $raceResults->getResults();
+        $race    = $raceResults->getRace();;
 
         $filename = 'sailwave-results-' . date('d-m-Y-i:j:s');
         return new Response(

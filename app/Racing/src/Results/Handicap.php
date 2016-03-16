@@ -4,6 +4,7 @@ namespace Racing\Results;
 use Racing\Dal\HandicapResult;
 use Racing\Dal\UnfinishedResult;
 use Racing\Dal\Race;
+use Racing\Results\RaceResult;
 
 class Handicap
 {
@@ -20,7 +21,8 @@ class Handicap
 
     public function getRawResults($raceId)
     {
-        return array_merge($this->handicapResultDal->getByRace($raceId), $this->unfinishedResultDal->getByRace($raceId));
+        $race = $this->raceDal->get($raceId);
+        return new RaceResult($race, array_merge($this->handicapResultDal->getByRace($raceId), $this->unfinishedResultDal->getByRace($raceId)));
     }
 
     public function getSortedResults($raceId)
@@ -50,7 +52,7 @@ class Handicap
             $result['position'] = $unfinishedPosition;
         }
 
-        return array_merge($results, $unfinishedResults);
+        return new RaceResult($race, array_merge($results, $unfinishedResults));
     }
 
     public function add($raceId, $sailNumber, $pyNumberId, $minutes, $seconds, $laps, $helm, $crew)

@@ -16,9 +16,7 @@ class HandicapResultController
 
     private $templater;
     private $app;
-    private $dal;
     private $resultLookup;
-    private $raceDal;
     private $handicapResult;
     private $resultsCsv;
 
@@ -26,14 +24,12 @@ class HandicapResultController
        $templater,
        Application $app,
        Result $resultLookup,
-       Race $raceDal,
        Handicap $handicapResult,
        Csv $resultsCsv
     ) {
 
         $this->templater        = $templater;
         $this->app              = $app;
-        $this->raceDal          = $raceDal;
         $this->handicapResult   = $handicapResult;
         $this->resultLookup     = $resultLookup;
         $this->resultsCsv       = $resultsCsv;
@@ -44,10 +40,12 @@ class HandicapResultController
         $errors = $this->getAndUnsetErrors();
         $message = $this->getAndUnsetMessages();
 
-        $results = $this->handicapResult->getRawResults($raceId);
+        $raceResults = $this->handicapResult->getRawResults($raceId);
+        $results     = $raceResults->getResults();
+        $race        = $raceResults->getRace();
         $boatClasses = $this->resultLookup->getBoatClasses();
         $competitors = $this->resultLookup->getCompetitors();
-        $race        = $this->raceDal->get($raceId);
+
 
         return $this->templater->render('handicapresults/index.twig', [
             'title' => 'Racing | Handicap Results',
@@ -63,8 +61,9 @@ class HandicapResultController
 
     public function csv(Request $request, $raceId)
     {
-        $results = $this->handicapResult->getSortedResults($raceId);
-        $race    = $this->raceDal->get($raceId);
+        $raceResults = $this->handicapResult->getSortedResults($raceId);
+        $results     = $raceResults->getResults();
+        $race        = $raceResults->getRace();
 
         $filename = 'sailwave-results-' . date('d-m-Y-i:j:s');
         return new Response(
