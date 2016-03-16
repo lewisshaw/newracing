@@ -16,7 +16,7 @@ class Series implements ServiceProviderInterface
             return new \RacingUi\Controller\SeriesController($app['twig'], $app, $app['series.dal']);
         });
 
-        $app['series.validator']     = $app->share(function () use ($app) {
+        $app['series.validator'] = $app->share(function () use ($app) {
             return new \RacingUi\Validator\Series($app['validator']);
         });
 
@@ -26,6 +26,10 @@ class Series implements ServiceProviderInterface
 
         $app['seriesfile.controller'] = $app->share(function () use ($app) {
             return new \RacingUi\Controller\SeriesFileController($app, $app['seriesfile.dal']);
+        });
+
+        $app['seriesfile.validator'] = $app->share(function () use ($app) {
+            return new \RacingUi\Validator\SeriesFile($app['validator']);
         });
     }
 

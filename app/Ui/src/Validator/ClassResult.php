@@ -3,6 +3,7 @@ namespace RacingUi\Validator;
 
 use Symfony\Component\Validator\ValidatorInterface as SymfonyValidatorInterface;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\HttpFoundation\Request;
 
 class ClassResult implements ValidatorInterface
 {
@@ -13,7 +14,7 @@ class ClassResult implements ValidatorInterface
         $this->validator = $validator;
     }
 
-    public function validate(array $data)
+    public function validate(Request $request)
     {
         $constraint = new Assert\Collection([
                 'boat_class_id' => [
@@ -52,6 +53,6 @@ class ClassResult implements ValidatorInterface
                 ]
             ]);
 
-        return $this->validator->validateValue($data, $constraint);
+        return $this->validator->validateValue($request->request->all(), $constraint);
     }
 }

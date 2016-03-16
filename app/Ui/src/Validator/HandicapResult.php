@@ -3,6 +3,7 @@ namespace RacingUi\Validator;
 
 use Symfony\Component\Validator\ValidatorInterface as SymfonyValidatorInterface;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\HttpFoundation\Request;
 
 class HandicapResult implements ValidatorInterface
 {
@@ -14,7 +15,7 @@ class HandicapResult implements ValidatorInterface
     }
 
     // TODO Validate the competitors array
-    public function validate(array $data)
+    public function validate(Request $request)
     {
         $constraint = new Assert\Collection([
                 'py_number_id' => [
@@ -79,6 +80,6 @@ class HandicapResult implements ValidatorInterface
                 ],
             ]);
 
-        return $this->validator->validateValue($data, $constraint);
+        return $this->validator->validateValue($request->request->all(), $constraint);
     }
 }

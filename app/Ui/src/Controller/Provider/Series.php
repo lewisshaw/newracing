@@ -27,6 +27,7 @@ class Series implements ControllerProviderInterface
                 ->assert('seriesId', '\d+');
 
         $factory->post('/files', 'seriesfile.controller:upload');
+                //->before(Validator::getCallback($app['seriesfile.validator'], $app));
 
         return $factory;
     }

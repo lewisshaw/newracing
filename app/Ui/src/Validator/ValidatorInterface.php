@@ -1,7 +1,9 @@
 <?php
 namespace RacingUi\Validator;
 
+use Symfony\Component\HttpFoundation\Request;
+
 interface ValidatorInterface
 {
-    public function validate(Array $data);
+    public function validate(Request $request);
 }
