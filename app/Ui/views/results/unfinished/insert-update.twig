@@ -11,7 +11,7 @@
       </div>
       <div class="form-group">
         <label for="boat-class">Class</label>
-        <select class="form-control" name="boat_class_id" id="boat-class">
+        <select class="form-control hidden-search-select" name="boat_class_id" id="boat-class">
           {% for boatClass in boatClasses %}
             <option value="{{ boatClass.boatClassId }}">{{ boatClass.name }}</option>
           {% endfor %}
@@ -25,7 +25,7 @@
     <div class="col-md-6">
       <div class="form-group">
         <label for="result-helm">Helm</label>
-        <select class="form-control" name="result_helm" id="result-helm">
+        <select class="form-control hidden-search-select" name="result_helm" id="result-helm">
           {% for competitor in competitors %}
             <option value="{{ competitor.competitorId }}">{{ competitor.firstName }} {{ competitor.lastName }}</option>
           {% endfor %}
@@ -33,7 +33,7 @@
       </div>
       <div class="form-group">
         <label for="result-crew">Crew</label>
-        <select class="form-control" name="result_crew" id="result-crew">
+        <select class="form-control hidden-search-select" name="result_crew" id="result-crew">
           <option value="">No Crew</option>
           {% for competitor in competitors %}
             <option value="{{ competitor.competitorId }}">{{ competitor.firstName }} {{ competitor.lastName }}</option>

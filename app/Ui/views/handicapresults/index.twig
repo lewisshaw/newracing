@@ -14,9 +14,9 @@
   {% include "partials/message.twig" %}
   <div>
 
-  <ul class="nav nav-tabs" role="tablist">
+  <ul class="nav nav-tabs" id="tabs-links" role="tablist">
     <li role="presentation" class="active"><a href="#add-result" aria-controls="add-result" role="tab" data-toggle="tab">Add Standard Result</a></li>
-    <li role="presentation"><a href="#add-non-finisher" aria-controls="add-non-finisher" role="tab" data-toggle="tab">Add Non Finisher</a></li>
+    <li role="presentation"><a id="add-non-finisher-link" href="#add-non-finisher" aria-controls="add-non-finisher" role="tab" data-toggle="tab">Add Non Finisher</a></li>
   </ul>
 
   <div class="tab-content">
@@ -87,4 +87,13 @@
     </div>
   </div>
 </div>
+{% endblock %}
+{% block scripts %}
+<script type="text/javascript">
+  $('#tabs-links a').click(function (e) {
+    e.preventDefault()
+    $(this).tab('show')
+    $('.hidden-search-select').select2();
+  })
+</script>
 {% endblock %}
