@@ -18,25 +18,39 @@
   </div>
 {% endfor %}
 <h3>Older Series</h3>
-<div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+<div style="margin-bottom:20px">
+<select class="form-control" id="series-select-box" style="font-size:17px">
+  {% for series in olderSeries %}
+    <option {{ selectedSeries is defined and series.seriesId == selectedSeries ? 'selected' : '' }} class="series-option" data-target="#series-display-{{ series.seriesId }}" value="{{series.seriesId}}">{{ series.seriesName|capitalize }} Series ({{ series.startDate}} - {{ series.endDate}})</option>
+  {% endfor %}
+</select>
+</div >
 {% for series in olderSeries %}
-  <div class="panel panel-default">
-    <div class="panel-heading" role="tab" id="heading{{loop.index}}">
+  <div class="panel panel-default series-display" id="series-display-{{ series.seriesId }}">
+    <div class="panel-heading" id="heading{{series.seriesId}}">
       <h4 class="panel-title">
-        <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapse{{loop.index}}" aria-expanded="false" aria-controls="collapse{{loop.index}}">
           {{ series.seriesName }} series - ran from {{ series.startDate|date(dateFormat) }} to {{ series.endDate|date(dateFormat) }}
-        </a>
          - {% include 'partials/league-file-link.twig' with {'seriesRow' : series} %}
       </h4>
     </div>
-    <div id="collapse{{loop.index}}" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading{{loop.index}}">
       <div class="panel-body">
         {% for race in series.races %}
           <p><p><a href="/races/{{ race.raceId }}/results/{{ race.raceTypeHandle|lower }}">{{ race.date|date(dateFormat) }} - {{ race.name }} - {{ race.raceTypeHandle|lower|capitalize }} </a></p>
         {% endfor %}
       </div>
-    </div>
   </div>
 {% endfor %}
-</div>
+{% endblock %}
+{% block scripts %}
+
+  <script type="text/javascript">
+    $(document).ready(function() {
+      $('.series-display').hide();
+      $('#series-display-' + $('#series-select-box').val()).show();
+    });
+    $('#series-select-box').change(function() {
+      $('.series-display').hide();
+      $('#series-display-' + $(this).val()).show();
+    })
+  </script>
 {% endblock %}

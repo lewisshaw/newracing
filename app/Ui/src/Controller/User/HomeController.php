@@ -20,7 +20,7 @@ class HomeController
         $this->racesBySeries = $racesBySeries;
     }
 
-    public function index()
+    public function index($seriesId = null)
     {
         $errors = $this->getAndUnsetErrors();
         $message = $this->getAndUnsetMessages();
@@ -34,6 +34,7 @@ class HomeController
             'message' => $message,
             'series' => $series,
             'olderSeries' => $olderSeries,
+            'selectedSeries' =>$seriesId,
         ]);
     }
 }

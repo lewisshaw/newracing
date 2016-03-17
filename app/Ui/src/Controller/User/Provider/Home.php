@@ -11,6 +11,7 @@ class Home implements ControllerProviderInterface
         $factory = $app['controllers_factory'];
 
         $factory->get('/', 'home.controller:index');
+        $factory->get('/{seriesId}', 'home.controller:index');
 
         return $factory;
     }
