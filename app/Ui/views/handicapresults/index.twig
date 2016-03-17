@@ -30,7 +30,10 @@
 
 </div>
 
-  <h2>Results - <a href="preview" target="_blank">Preview Calculated Results</a></h2>
+  <h2>Results - <button type="button" id="preview-modal-button" class="btn btn-link btn-lg" data-toggle="modal" data-target="#preview-modal">
+  Preview Calculated Results
+</button>
+</h2>
   <table class="table">
     <thead>
       <tr>
@@ -68,4 +71,58 @@
       {% endfor %}
     </tbody>
   </table>
+  <div class="modal fade" id="preview-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Preview Calculated Results</h4>
+      </div>
+      <div id ="preview-modal-body" class="modal-body">
+        <table id="my-final-table" class="table">
+        <thead>
+          <th>Position</th><th>Sail Number</th><th>Helm</th><th>Crew</th><th>Boat Class Name</th><th>Laps</th><th>Time</th><th>Corrected Time</th>
+        </thead>
+        <tbody>
+        </tbody>
+      </table>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+  <script type="text/javascript">
+    $("#preview-modal-button").click(function() {
+      $.ajax({
+        url: "/admin/races/{{ race.raceId }}/results/handicap/json",
+        context: document.body
+      }).done(function(data) {
+        var finalData = [];
+        $.each(data.results, function(index, value) {
+          if(!value.time) {
+            value.time = value.unfinishedTypeHandle;
+            value.laps = value.unfinishedTypeHandle;
+            value.correctedTime = value.unfinishedTypeHandle;
+          }
+          finalData.push(value);
+        })
+        $('#my-final-table').dynatable({
+          dataset: {
+            records: finalData
+          },
+          features: {
+            paginate: false,
+            recordCount: false,
+            sort: false,
+            search: false
+          }
+        });
+      });
+    });
+  </script>
 {% endblock %}

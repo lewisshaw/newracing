@@ -61,6 +61,19 @@ class ClassResultController
         ]);
     }
 
+    public function indexJson(Request $request, $raceId)
+    {
+        $raceResults = $this->classResult->getSortedResults($raceId);
+        $results     = $raceResults->getResults();
+        $race        = $raceResults->getRace();
+        $data = [
+            'race' => $race,
+            'results' => $results,
+        ];
+
+        return $this->app->json($data);
+    }
+
     public function csv(Request $request, $raceId)
     {
         $raceResults = $this->classResult->getSortedResults($raceId);

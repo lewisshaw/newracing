@@ -59,6 +59,19 @@ class HandicapResultController
         ]);
     }
 
+    public function indexJson(Request $request, $raceId)
+    {
+        $raceResults = $this->handicapResult->getSortedResults($raceId);
+        $results     = $raceResults->getResults();
+        $race        = $raceResults->getRace();
+        $data = [
+            'race' => $race,
+            'results' => $results,
+        ];
+
+        return $this->app->json($data);
+    }
+
     public function csv(Request $request, $raceId)
     {
         $raceResults = $this->handicapResult->getSortedResults($raceId);

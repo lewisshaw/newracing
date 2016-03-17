@@ -12,6 +12,7 @@ class ClassResult implements ControllerProviderInterface
         $factory = $app['controllers_factory'];
 
         $factory->get('/', 'classresult.controller:index');
+        $factory->get('/json', 'classresult.controller:indexJson');
         $factory->post('/', 'classresult.controller:insert')
                 ->before(Validator::getCallback($app['classresult.validator'], $app));
         $factory->get('/csv', 'classresult.controller:csv');
