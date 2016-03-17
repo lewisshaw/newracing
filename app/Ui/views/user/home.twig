@@ -17,6 +17,7 @@
     </div>
   </div>
 {% endfor %}
+{% if olderSeries|length > 0 %}
 <h3>Older Series</h3>
 <div style="margin-bottom:20px">
 <select class="form-control" id="series-select-box" style="font-size:17px">
@@ -25,6 +26,7 @@
   {% endfor %}
 </select>
 </div >
+{% endif %}
 {% for series in olderSeries %}
   <div class="panel panel-default series-display" id="series-display-{{ series.seriesId }}">
     <div class="panel-heading" id="heading{{series.seriesId}}">
