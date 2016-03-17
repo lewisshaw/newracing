@@ -46,6 +46,8 @@ class ClassResultController
         $raceResults = $this->classResult->getRawResults($raceId);
         $results = $raceResults->getResults();
         $race = $raceResults->getRace();
+        $sortedRaceResults = $this->classResult->getSortedResults($raceId);
+        $sortedResults = $sortedRaceResults->getResults();
         $boatClasses = $this->resultLookup->getBoatClasses();
         $competitors = $this->resultLookup->getCompetitors();
 
@@ -55,23 +57,11 @@ class ClassResultController
             'errors' => $errors,
             'message' => $message,
             'results' => $results,
+            'sortedResults' => $sortedResults,
             'boatClasses' => $boatClasses,
             'competitors' => $competitors,
             'race'        => $race,
         ]);
-    }
-
-    public function indexJson(Request $request, $raceId)
-    {
-        $raceResults = $this->classResult->getSortedResults($raceId);
-        $results     = $raceResults->getResults();
-        $race        = $raceResults->getRace();
-        $data = [
-            'race' => $race,
-            'results' => $results,
-        ];
-
-        return $this->app->json($data);
     }
 
     public function csv(Request $request, $raceId)

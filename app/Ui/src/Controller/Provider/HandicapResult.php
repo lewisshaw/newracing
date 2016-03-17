@@ -12,7 +12,6 @@ class HandicapResult implements ControllerProviderInterface
         $factory = $app['controllers_factory'];
 
         $factory->get('/', 'handicapresult.controller:index');
-        $factory->get('/json', 'handicapresult.controller:indexJson');
         $factory->post('/', 'handicapresult.controller:insert')
                 ->before(Validator::getCallback($app['handicapresult.validator'], $app));
         $factory->get('/csv', 'handicapresult.controller:csv');

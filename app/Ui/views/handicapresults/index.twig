@@ -79,13 +79,7 @@
         <h4 class="modal-title" id="myModalLabel">Preview Calculated Results</h4>
       </div>
       <div id ="preview-modal-body" class="modal-body">
-        <table id="my-final-table" class="table">
-        <thead>
-          <th>Position</th><th>Sail Number</th><th>Helm</th><th>Crew</th><th>Boat Class Name</th><th>Laps</th><th>Time</th><th>Corrected Time</th>
-        </thead>
-        <tbody>
-        </tbody>
-      </table>
+        {%include 'partials/results-tables/handicap.twig' with {'results' : sortedResults} %}
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
@@ -93,36 +87,4 @@
     </div>
   </div>
 </div>
-{% endblock %}
-
-{% block scripts %}
-  <script type="text/javascript">
-    $("#preview-modal-button").click(function() {
-      $.ajax({
-        url: "/admin/races/{{ race.raceId }}/results/handicap/json",
-        context: document.body
-      }).done(function(data) {
-        var finalData = [];
-        $.each(data.results, function(index, value) {
-          if(!value.time) {
-            value.time = value.unfinishedTypeHandle;
-            value.laps = value.unfinishedTypeHandle;
-            value.correctedTime = value.unfinishedTypeHandle;
-          }
-          finalData.push(value);
-        })
-        $('#my-final-table').dynatable({
-          dataset: {
-            records: finalData
-          },
-          features: {
-            paginate: false,
-            recordCount: false,
-            sort: false,
-            search: false
-          }
-        });
-      });
-    });
-  </script>
 {% endblock %}
