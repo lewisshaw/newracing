@@ -25,7 +25,7 @@
 <div style="margin-bottom:20px">
 <select class="form-control" id="series-select-box" style="font-size:17px">
   {% for series in olderSeries %}
-    <option {{ selectedSeries is defined and series.seriesId == selectedSeries ? 'selected' : '' }} class="series-option" data-target="#series-display-{{ series.seriesId }}" value="{{series.seriesId}}">{{ series.seriesName|capitalize }} Series ({{ series.startDate}} - {{ series.endDate}})</option>
+    <option {{ selectedSeries is defined and series.seriesId == selectedSeries ? 'selected' : '' }} class="series-option" data-target="#series-display-{{ series.seriesId }}" value="{{series.seriesId}}">{{ series.seriesName|capitalize }} Series ({{ series.startDate|date(dateFormat) }} - {{ series.endDate|date(dateFormat) }})</option>
   {% endfor %}
 </select>
 </div >
