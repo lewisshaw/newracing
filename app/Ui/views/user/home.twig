@@ -11,6 +11,9 @@
       </h3>
     </div>
     <div class="panel-body">
+      {% if seriesRow.races is empty %}
+        <p>Sorry, no races are currently available for this series</p>
+      {% endif %}
       {% for race in seriesRow.races %}
         <p><a href="/races/{{ race.raceId }}/results/{{ race.raceTypeHandle|lower }}">{{ race.date|date(dateFormat) }} - {{ race.name }} - {{ race.raceTypeHandle|lower|capitalize }} </a></p>
       {% endfor %}
@@ -36,6 +39,9 @@
       </h4>
     </div>
       <div class="panel-body">
+        {% if series.races is empty %}
+          <p>Sorry, no races are currently available for this series</p>
+        {% endif %}
         {% for race in series.races %}
           <p><p><a href="/races/{{ race.raceId }}/results/{{ race.raceTypeHandle|lower }}">{{ race.date|date(dateFormat) }} - {{ race.name }} - {{ race.raceTypeHandle|lower|capitalize }} </a></p>
         {% endfor %}
