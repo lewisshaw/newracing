@@ -44,12 +44,7 @@ class Processor
         $this->dbConn->beginTransaction();
         try {
             $rows = $this->getRows($reader, $keys);
-            $count = 0;
             foreach ($rows as $row) {
-                $count++;
-                if ($count == 2) {
-                    throw new \Exception('noooooooooooooooo');
-                }
                 $pyNumber = $this->getPyNumber($row['class'], $row['pyNumber'], $row['numberOfCrew']);
                 $helm = $this->getCompetitorId($row['helm']);
                 $crew = $this->getCompetitorId($row['crew']);
