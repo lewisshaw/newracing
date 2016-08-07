@@ -46,6 +46,25 @@ class Competitor
         );
     }
 
+    public function getByName($firstName, $lastName)
+    {
+        $query = '
+            SELECT
+                competitorId
+            FROM
+                Competitor
+            WHERE
+                UPPER(firstName) = UPPER(:firstName)
+            AND
+                UPPER(lastName) = UPPER(:lastName)';
+
+        return $this->dbConn->fetchColumn(
+            $query,
+            [':firstName' => $firstName, ':lastName' => $lastName],
+            0
+        );
+    }
+
     public function insert($firstName, $lastName)
     {
         $query = '
@@ -56,7 +75,7 @@ class Competitor
                 :firstName,
                 :lastName
             )';
-        return $this->dbConn->executeQuery(
+        $this->dbConn->executeQuery(
             $query,
             [
                 ':firstName' => $firstName,
@@ -67,6 +86,8 @@ class Competitor
                 ':lastName'  => \PDO::PARAM_STR,
             ]
         );
+
+        return $this->dbConn->lastInsertId();
     }
 
     public function update($competitorId, $firstName, $lastName)

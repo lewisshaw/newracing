@@ -52,6 +52,17 @@ class Result implements ServiceProviderInterface
         $app['results.csv'] = $app->share(function () use ($app) {
             return new \Racing\Results\Csv();
         });
+
+        $app['import.results.csv'] = $app->share(function () use ($app) {
+            return new \Racing\Import\Csv\Processor(
+                $app['pynumber.dal'],
+                $app['competitor.dal'],
+                $app['boatclass.dal'],
+                $app['results.handicap'],
+                $app['results.class'],
+                $app['unfinishedresult.dal'],
+                $app['db']);
+        });
     }
 
     public function boot(Application $app)

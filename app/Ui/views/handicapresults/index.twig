@@ -17,6 +17,7 @@
   <ul class="nav nav-tabs" id="tabs-links" role="tablist">
     <li role="presentation" class="active"><a href="#add-result" aria-controls="add-result" role="tab" data-toggle="tab">Add Standard Result</a></li>
     <li role="presentation"><a id="add-non-finisher-link" href="#add-non-finisher" aria-controls="add-non-finisher" role="tab" data-toggle="tab">Add Non Finisher</a></li>
+    <li role="presentation"><a id="upload-csv-tab" href="#upload-csv" aria-controls="upload-csv" role="tab" data-toggle="tab">Upload CSV</a></li>
   </ul>
 
   <div class="tab-content">
@@ -25,6 +26,18 @@
     </div>
     <div role="tabpanel" class="tab-pane" id="add-non-finisher">
       {% include "results/unfinished/insert-update.twig"  with {'redirectUrl': 'admin/races/' ~ race.raceId ~ '/results/' ~ race.raceTypeHandle|lower } %}
+    </div>
+    <div role="tabpanel" class="tab-pane" id="upload-csv">
+      <p>Please select a CSV</p>
+      <form method="post" action="import/csv" class="form-inline" enctype="multipart/form-data">
+          <div class="form-group" >
+            <span style="font-weight: bold" id="file-name-display">No file selected</span>
+            <label class="btn btn-primary" for="file-select">Browse
+              <input type="file" name="results-file" class="form-control" id="file-select" style="display:none"/>
+            </label>
+          </div>
+        <button type="submit" class="btn btn-primary">Upload</button>
+      </form>
     </div>
   </div>
 
@@ -94,6 +107,9 @@
     e.preventDefault()
     $(this).tab('show')
     $('.hidden-search-select').select2();
-  })
+  });
+  $('#file-select').change( function (){
+    $('#file-name-display').html($('#file-select')[0].files[0].name);
+  });
 </script>
 {% endblock %}

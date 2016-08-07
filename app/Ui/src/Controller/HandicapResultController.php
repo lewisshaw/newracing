@@ -6,7 +6,9 @@ use Racing\Lookup\Result;
 use Racing\Results\Handicap;
 use RacingUi\Session\SessionAlertsTrait;
 use Racing\Results\Csv;
+use Racing\Import\Csv\Processor;
 use Silex\Application;
+use League\Csv\Reader;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -19,13 +21,15 @@ class HandicapResultController
     private $resultLookup;
     private $handicapResult;
     private $resultsCsv;
+    private $csvProcessor;
 
     public function __construct(
        $templater,
        Application $app,
        Result $resultLookup,
        Handicap $handicapResult,
-       Csv $resultsCsv
+       Csv $resultsCsv,
+       Processor $csvProcessor
     ) {
 
         $this->templater        = $templater;
@@ -33,6 +37,7 @@ class HandicapResultController
         $this->handicapResult   = $handicapResult;
         $this->resultLookup     = $resultLookup;
         $this->resultsCsv       = $resultsCsv;
+        $this->csvProcessor     = $csvProcessor;
     }
 
     public function index(Request $request, $raceId)
@@ -102,6 +107,26 @@ class HandicapResultController
     {
         $this->handicapResult->delete($resultId);
         $this->app['session']->set('message', 'Result has been deleted');
+        return $this->app->redirect('/admin/races/' . $raceId . '/results/handicap');
+    }
+
+    public function upload(Request $request, $raceId)
+    {
+        $upload = $request->files->get('results-file');
+        $savedFile = $upload->move(__DIR__ . '/../../../../uploads/handicap-results/', $upload->getClientOriginalName());
+        $reader = Reader::createFromPath($savedFile->getPathName());
+        if (!$this->csvProcessor->processHandicap($reader, $raceId)) {
+            $this->app['session']->set(
+                'errors',
+                [
+                    0 => [
+                        'Message' => 'Error processing file, the following output was given: '
+                    ]
+                ]
+            );
+            return $this->app->redirect('/admin/races/' . $raceId . '/results/handicap');
+        }
+        $this->app['session']->set('message', 'File processed - Please check results manually to ensure they are correct');
         return $this->app->redirect('/admin/races/' . $raceId . '/results/handicap');
     }
 }

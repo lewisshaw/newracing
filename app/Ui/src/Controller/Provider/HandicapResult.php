@@ -20,6 +20,8 @@ class HandicapResult implements ControllerProviderInterface
 
         $factory->get('/preview', 'user.handicap.controller:index');
 
+        $factory->post('/import/csv', 'handicapresult.controller:upload');
+
         return $factory;
     }
 }

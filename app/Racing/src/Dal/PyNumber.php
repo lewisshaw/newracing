@@ -74,7 +74,7 @@ class PyNumber
                 :pyNumber,
                 1
             )';
-        return $this->dbConn->executeQuery(
+        $this->dbConn->executeQuery(
             $query,
             [
                 ':boatClassId' => $boatClassId,
@@ -85,6 +85,8 @@ class PyNumber
                 ':pyNumber'  => \PDO::PARAM_INT,
             ]
         );
+
+        return $this->dbConn->lastInsertId();
     }
 
     private function deactivateCurrentPyNumber($boatClassId)
