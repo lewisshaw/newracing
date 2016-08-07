@@ -44,7 +44,16 @@ class Processor
         $this->dbConn->beginTransaction();
         try {
             $rows = $this->getRows($reader, $keys);
+            $errors = [];
+            $count = 0;
             foreach ($rows as $row) {
+                $count++;
+                try {
+                    Validator::validateHandicapRow($row);
+                } catch (\Exception $e) {
+                    $errors[] = 'Error on line ' . $count . ' of csv:';
+                    $errors[] = $e->getMessage();
+                }
                 $pyNumber = $this->getPyNumber($row['class'], $row['pyNumber'], $row['numberOfCrew']);
                 $helm = $this->getCompetitorId($row['helm']);
                 $crew = $this->getCompetitorId($row['crew']);
@@ -75,11 +84,16 @@ class Processor
                 );
             }
         } catch (\Exception $e) {
+            $errors[] = "An unknown error occured during processing, please retry";
             $this->dbConn->rollBack();
-            return false;
+            return new Result(false, $errors);
+        }
+        if (count($errors) > 0) {
+            $this->dbConn->rollBack();
+            return new Result(false, $errors);
         }
         $this->dbConn->commit();
-        return true;
+        return new Result(true);
     }
 
     public function processClass(Reader $reader, $raceId)
@@ -88,7 +102,15 @@ class Processor
         $this->dbConn->beginTransaction();
         try {
             $rows = $this->getRows($reader, $keys);
+            $count = 0;
             foreach ($rows as $row) {
+                $count++;
+                try {
+                    Validator::validateClassRow($row);
+                } catch (\Exception $e) {
+                    $errors[] = 'Error on line ' . $count . ' of csv:';
+                    $errors[] = $e->getMessage();
+                }
                 $helm = $this->getCompetitorId($row['helm']);
                 $crew = $this->getCompetitorId($row['crew']);
                 $boatClass = $this->getBoatClass($row['class'], $row['numberOfCrew']);
@@ -110,11 +132,16 @@ class Processor
                 $this->classResult->add($raceId, trim($row['sailNumber']), $boatClass, trim($row['position']), $helm, $crew);
             }
         } catch (\Exception $e) {
+            $errors[] = "An unknown error occured during processing, please retry";
             $this->dbConn->rollBack();
-            return false;
+            return new Result(false, $errors);
+        }
+        if (count($errors) > 0) {
+            $this->dbConn->rollBack();
+            return new Result(false, $errors);
         }
         $this->dbConn->commit();
-        return true;
+        return new Result(true);
     }
 
     private function getRows(Reader $reader, $keys)

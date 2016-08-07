@@ -126,15 +126,14 @@ class ClassResultController
         }
         $savedFile = $upload->move(__DIR__ . '/../../../../uploads/class-results/', $upload->getClientOriginalName());
         $reader = Reader::createFromPath($savedFile->getPathName());
-        if (!$this->csvProcessor->processClass($reader, $raceId)) {
-            $this->app['session']->set(
-                'errors',
-                [
-                    0 => [
-                        'Message' => 'Error processing file, the following output was given: '
-                    ]
-                ]
-            );
+        $result = $this->csvProcessor->processClass($reader, $raceId);
+        if (!$result->isSuccessful()) {
+            $errors = [];
+            $errors[]['Message'] = 'The file could not be processed for the following reasons';
+            foreach ($result->getErrors() as $error) {
+                $errors[]['Message'] = $error;
+            }
+            $this->app['session']->set('errors', $errors);
             return $this->app->redirect('/admin/races/' . $raceId . '/results/class');
         }
         $this->app['session']->set('message', 'File processed - Please check results manually to ensure they are correct');
