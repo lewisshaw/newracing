@@ -20,6 +20,8 @@ class ClassResult implements ControllerProviderInterface
 
         $factory->get('/preview', 'user.class.controller:index');
 
+        $factory->post('/import/csv', 'classresult.controller:upload');
+
         return $factory;
     }
 }

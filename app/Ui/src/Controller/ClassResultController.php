@@ -7,9 +7,11 @@ use Racing\Dal\Competitor;
 use Racing\Dal\Race;
 use Racing\Dal\UnfinishedResult;
 use Racing\Results\Csv;
+use Racing\Import\Csv\Processor;
 use Racing\Lookup\Result;
 use RacingUi\Session\SessionAlertsTrait;
 use Silex\Application;
+use League\Csv\Reader;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -22,13 +24,15 @@ class ClassResultController
     private $classResult;
     private $resultLookup;
     private $resutsCsv;
+    private $csvProcessor;
 
     public function __construct(
        $templater,
        Application $app,
        ClassResult $classResult,
        Result $resultLookup,
-       Csv $resultsCsv
+       Csv $resultsCsv,
+       Processor $csvProcessor
     ) {
 
         $this->templater    = $templater;
@@ -36,6 +40,7 @@ class ClassResultController
         $this->classResult  = $classResult;
         $this->resultLookup = $resultLookup;
         $this->resultsCsv   = $resultsCsv;
+        $this->csvProcessor = $csvProcessor;
     }
 
     public function index(Request $request, $raceId)
@@ -102,6 +107,37 @@ class ClassResultController
     {
         $this->classResult->delete($resultId);
         $this->app['session']->set('message', 'Result has been deleted');
+        return $this->app->redirect('/admin/races/' . $raceId . '/results/class');
+    }
+
+    public function upload(Request $request, $raceId)
+    {
+        $upload = $request->files->get('results-file');
+        if (!$upload) {
+            $this->app['session']->set(
+                'errors',
+                [
+                    0 => [
+                        'Message' => 'Please select a file'
+                    ]
+                ]
+            );
+            return $this->app->redirect('/admin/races/' . $raceId . '/results/class');
+        }
+        $savedFile = $upload->move(__DIR__ . '/../../../../uploads/class-results/', $upload->getClientOriginalName());
+        $reader = Reader::createFromPath($savedFile->getPathName());
+        if (!$this->csvProcessor->processClass($reader, $raceId)) {
+            $this->app['session']->set(
+                'errors',
+                [
+                    0 => [
+                        'Message' => 'Error processing file, the following output was given: '
+                    ]
+                ]
+            );
+            return $this->app->redirect('/admin/races/' . $raceId . '/results/class');
+        }
+        $this->app['session']->set('message', 'File processed - Please check results manually to ensure they are correct');
         return $this->app->redirect('/admin/races/' . $raceId . '/results/class');
     }
 }

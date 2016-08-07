@@ -18,7 +18,8 @@ class ClassResult implements ServiceProviderInterface
                 $app,
                 $app['results.class'],
                 $app['lookup.result'],
-                $app['results.csv']
+                $app['results.csv'],
+                $app['import.results.csv']
             );
         });
 

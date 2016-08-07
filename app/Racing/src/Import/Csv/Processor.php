@@ -84,7 +84,37 @@ class Processor
 
     public function processClass(Reader $reader, $raceId)
     {
+        $keys = ['sailNumber', 'class', 'position', 'helm', 'crew', 'pyNumber', 'numberOfCrew'];
+        $this->dbConn->beginTransaction();
+        try {
+            $rows = $this->getRows($reader, $keys);
+            foreach ($rows as $row) {
+                $helm = $this->getCompetitorId($row['helm']);
+                $crew = $this->getCompetitorId($row['crew']);
+                $boatClass = $this->getBoatClass($row['class'], $row['numberOfCrew']);
+                if (empty(trim($row['position']))) {
+                    $competitors = [
+                        'helm' => $helm,
+                        'crew' => $crew,
+                    ];
+                    $this->unfinishedResult->insert(
+                        $raceId,
+                        trim($row['sailNumber']),
+                        $boatClass,
+                        'DNF',
+                        $competitors
+                    );
+                    continue;
+                }
 
+                $this->classResult->add($raceId, trim($row['sailNumber']), $boatClass, trim($row['position']), $helm, $crew);
+            }
+        } catch (\Exception $e) {
+            $this->dbConn->rollBack();
+            return false;
+        }
+        $this->dbConn->commit();
+        return true;
     }
 
     private function getRows(Reader $reader, $keys)
