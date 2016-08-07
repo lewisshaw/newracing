@@ -113,6 +113,17 @@ class HandicapResultController
     public function upload(Request $request, $raceId)
     {
         $upload = $request->files->get('results-file');
+        if (!$upload) {
+            $this->app['session']->set(
+                'errors',
+                [
+                    0 => [
+                        'Message' => 'Please select a file'
+                    ]
+                ]
+            );
+            return $this->app->redirect('/admin/races/' . $raceId . '/results/handicap');
+        }
         $savedFile = $upload->move(__DIR__ . '/../../../../uploads/handicap-results/', $upload->getClientOriginalName());
         $reader = Reader::createFromPath($savedFile->getPathName());
         if (!$this->csvProcessor->processHandicap($reader, $raceId)) {

@@ -95,6 +95,17 @@ class BoatClassController
     public function upload(Request $request)
     {
         $upload = $request->files->get('py-list-file');
+        if (!$upload) {
+            $this->app['session']->set(
+                'errors',
+                [
+                    0 => [
+                        'Message' => 'Please select a file'
+                    ]
+                ]
+            );
+            return $this->app->redirect('/admin/races/' . $raceId . '/results/handicap');
+        }
         $savedFile = $upload->move(__DIR__ . '/../../../../uploads/py/', $upload->getClientOriginalName());
         $reader = Reader::createFromPath($savedFile->getPathName());
         $rows = $reader->fetch();
