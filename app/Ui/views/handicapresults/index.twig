@@ -108,11 +108,9 @@
     $(this).tab('show')
     $('.hidden-search-select').select2();
   });
-$.ready(function() {
   $('#file-select').change( function (){
     $('#file-name-display').html($('#file-select')[0].files[0].name);
   });
-});
 
 </script>
 {% endblock %}
