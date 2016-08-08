@@ -12,7 +12,12 @@ class Url implements ServiceProviderInterface
             $request = $app['request'];
             $referer = $request->headers->get('referer');
             $origin  = $request->headers->get('origin');
-            return str_replace($origin, '', $referer);
+            $params = $app['request']->query->all();
+            //echo $origin . ' : ' . $referer;
+            $urlParts = explode("?", $referer);
+            $referer = $urlParts[0];
+            $query  = empty($params) ? '' : '?' . http_build_query($params);
+            return str_replace($origin, '', $referer) . $query;
         };
     }
 

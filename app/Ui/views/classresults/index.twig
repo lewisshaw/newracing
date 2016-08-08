@@ -14,21 +14,21 @@
   {% include "partials/message.twig" %}
 
   <ul class="nav nav-tabs" id="tabs-links" role="tablist">
-    <li role="presentation" class="active"><a href="#add-result" aria-controls="add-result" role="tab" data-toggle="tab">Add Standard Result</a></li>
-    <li role="presentation"><a href="#add-non-finisher" aria-controls="add-non-finisher" role="tab" data-toggle="tab">Add Non Finisher</a></li>
-    <li role="presentation"><a id="upload-csv-tab" href="#upload-csv" aria-controls="upload-csv" role="tab" data-toggle="tab">Upload CSV</a></li>
+    <li role="presentation" {% if tab is empty %} class="active"{% endif %}><a href="#add-result" aria-controls="add-result" role="tab" data-toggle="tab">Add Standard Result</a></li>
+    <li role="presentation" {% if tab == 'unfinished' %} class="active"{% endif %}><a href="#add-non-finisher" aria-controls="add-non-finisher" role="tab" data-toggle="tab">Add Non Finisher</a></li>
+    <li role="presentation" {% if tab =='csv' %} class="active"{% endif %}><a id="upload-csv-tab" href="#upload-csv" aria-controls="upload-csv" role="tab" data-toggle="tab">Upload CSV</a></li>
   </ul>
 
   <div class="tab-content">
-    <div role="tabpanel" class="tab-pane active" id="add-result">
+    <div role="tabpanel" class="tab-pane {% if tab is empty %}active{% endif %}" id="add-result">
       {% include "classresults/insert-update.twig" %}
     </div>
-    <div role="tabpanel" class="tab-pane" id="add-non-finisher">
+    <div role="tabpanel" class="tab-pane {% if tab == 'unfinished' %}active{% endif %}" id="add-non-finisher">
       {% include "results/unfinished/insert-update.twig" with {'redirectUrl': 'admin/races/' ~ race.raceId ~ '/results/' ~ race.raceTypeHandle|lower } %}
     </div>
-    <div role="tabpanel" class="tab-pane" id="upload-csv">
+    <div role="tabpanel" class="tab-pane {% if tab =='csv' %}active{% endif %}" id="upload-csv">
       <p>Please select a CSV</p>
-      <form method="post" action="import/csv" class="form-inline" enctype="multipart/form-data">
+      <form method="post" action="import/csv?csv" class="form-inline" enctype="multipart/form-data">
           <div class="form-group" >
             <span style="font-weight: bold" id="file-name-display">No file selected</span>
             <label class="btn btn-primary" for="file-select">Browse

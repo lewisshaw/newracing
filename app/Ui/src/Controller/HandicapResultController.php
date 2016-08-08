@@ -52,6 +52,14 @@ class HandicapResultController
         $sortedResults = $sortedRaceResults->getResults();
         $boatClasses = $this->resultLookup->getBoatClasses();
         $competitors = $this->resultLookup->getCompetitors();
+        $tab = '';
+        if (null !== $request->query->get('unfinished')) {
+            $tab = 'unfinished';
+        }
+
+        if (null !== $request->query->get('csv')) {
+            $tab = 'csv';
+        }
 
 
         return $this->templater->render('handicapresults/index.twig', [
@@ -64,6 +72,7 @@ class HandicapResultController
             'boatClasses' => $boatClasses,
             'competitors' => $competitors,
             'race'        => $race,
+            'tab'         => $tab,
         ]);
     }
 
@@ -122,7 +131,7 @@ class HandicapResultController
                     ]
                 ]
             );
-            return $this->app->redirect('/admin/races/' . $raceId . '/results/handicap');
+            return $this->app->redirect($this->app['previous_url']);
         }
         $savedFile = $upload->move(__DIR__ . '/../../../../uploads/handicap-results/', $upload->getClientOriginalName());
         $reader = Reader::createFromPath($savedFile->getPathName());

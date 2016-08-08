@@ -55,6 +55,14 @@ class ClassResultController
         $sortedResults = $sortedRaceResults->getResults();
         $boatClasses = $this->resultLookup->getBoatClasses();
         $competitors = $this->resultLookup->getCompetitors();
+        $tab = '';
+        if (null !== $request->query->get('unfinished')) {
+            $tab = 'unfinished';
+        }
+
+        if (null !== $request->query->get('csv')) {
+            $tab = 'csv';
+        }
 
         return $this->templater->render('classresults/index.twig', [
             'title' => 'Racing | Class Results',
@@ -66,6 +74,7 @@ class ClassResultController
             'boatClasses' => $boatClasses,
             'competitors' => $competitors,
             'race'        => $race,
+            'tab'         => $tab,
         ]);
     }
 
@@ -122,7 +131,7 @@ class ClassResultController
                     ]
                 ]
             );
-            return $this->app->redirect('/admin/races/' . $raceId . '/results/class');
+            return $this->app->redirect($this->app['previous_url']);
         }
         $savedFile = $upload->move(__DIR__ . '/../../../../uploads/class-results/', $upload->getClientOriginalName());
         $reader = Reader::createFromPath($savedFile->getPathName());
