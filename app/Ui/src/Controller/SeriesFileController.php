@@ -19,6 +19,11 @@ class SeriesFileController
     public function upload(Request $request)
     {
         $upload = $request->files->get('league-table-file');
+        if (empty($upload)) {
+            $this->app['session']->set('errors', [0 => ['Message' => 'Please select a file']]);
+            return $this->app->redirect('/admin/series');
+        }
+
         $seriesId = $request->get('series-id');
         $filename = 'league-table-' . $seriesId . '.htm';
         $savedFile = $upload->move(__DIR__ . '/../../../../public/league-tables/', $filename);
