@@ -13,7 +13,10 @@ class RaceImport
 
     public function import(Request $request)
     {
-
+        //receives json with Race name, race date, race csv
+        //Add a race with correct details
+        //Try processing the CSV
+        //If no errors, publish race
         return $password;
     }
 }
