@@ -23,10 +23,16 @@ return [
                 'users'   => $localConfig['users'],
                 'logout' => ['logout_path' => '/admin/logout'],
             ],
+            'api' => [
+                'pattern' => '^/api',
+                'http' => true,
+                'users' => $localConfig['api_users'],
+            ],
             'unsecured' => [
                 'anonymous' => true,
             ],
         ],
+
     ],
     'Silex\Provider\UrlGeneratorServiceProvider' => [],
     'Racing\ServiceProvider\BoatClass' => [],
@@ -40,4 +46,5 @@ return [
     'Racing\ServiceProvider\Twig' => [],
     'Racing\ServiceProvider\User' => [],
     'Racing\ServiceProvider\Url' => [],
+    'Racing\ServiceProvider\Api' => [],
 ];

@@ -1,0 +1,22 @@
+{% extends "layout/main.twig" %}
+{% block breadcrumb %}
+  {{ parent() }}
+  <li><a href="/admin/races">series</a></li>
+  <li class="active">edit</li>
+{% endblock %}
+{% block content %}
+  <h1>Edit Race</h1>
+  <p class="important">
+    Edit race.
+  </p>
+  {% include "partials/errors.twig" %}
+  {% include "partials/message.twig" %}
+  {% include "series/insert-update.twig" with {'formClass': 'form'} %}
+{% endblock %}
+{% block scripts %}
+  <script type="text/javascript">
+    {% if race is defined %}
+      $('#start-date').datepicker('setDate', '{{ race.date }}');
+    {% endif %}
+</script>
+{% endblock %}
