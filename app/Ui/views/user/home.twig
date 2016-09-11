@@ -6,7 +6,7 @@
   <div class="panel panel-default">
     <div class="panel-heading">
       <h3 class="panel-title">
-        {{ seriesRow.seriesName }} series running from {{ seriesRow.startDate|date(dateFormat) }} to {{ seriesRow.endDate|date(dateFormat) }} -
+        {% include 'user/race-dates.twig' with {'seriesRow' : seriesRow, 'runTense' : 'running' } %}
         {% include 'partials/league-file-link.twig' with {'seriesRow' : seriesRow} %}
       </h3>
     </div>
@@ -34,8 +34,8 @@
   <div class="panel panel-default series-display" id="series-display-{{ series.seriesId }}">
     <div class="panel-heading" id="heading{{series.seriesId}}">
       <h4 class="panel-title">
-          {{ series.seriesName }} series - ran from {{ series.startDate|date(dateFormat) }} to {{ series.endDate|date(dateFormat) }}
-         - {% include 'partials/league-file-link.twig' with {'seriesRow' : series} %}
+        {% include 'user/race-dates.twig' with {'seriesRow' : series, 'runTense' : 'ran' } %}
+        {% include 'partials/league-file-link.twig' with {'seriesRow' : series} %}
       </h4>
     </div>
       <div class="panel-body">

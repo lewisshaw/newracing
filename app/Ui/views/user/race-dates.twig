@@ -1,0 +1,6 @@
+{{ seriesRow.seriesName }} series
+{% if seriesRow.startDate == seriesRow.endDate %}
+ - ran on {{ seriesRow.startDate|date(dateFormat) }} -
+{% else %}
+- {{runTense}} from {{ seriesRow.startDate|date(dateFormat) }} to {{ seriesRow.endDate|date(dateFormat) }} -
+{% endif %}
