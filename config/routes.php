@@ -12,4 +12,5 @@ return [
     '/'=> new RacingUi\Controller\User\Provider\Home(),
     '/races/{raceId}/results/handicap'=> new RacingUi\Controller\User\Provider\HandicapResult(),
     '/races/{raceId}/results/class' => new RacingUi\Controller\User\Provider\ClassResult(),
+    '/results/competitor/' => new RacingUi\Controller\User\Provider\CompetitorResults(),
 ];
