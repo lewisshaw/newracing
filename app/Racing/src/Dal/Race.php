@@ -32,7 +32,9 @@ class Race
         ON
             rt.raceTypeId = r.raceTypeId
         WHERE
-            r.seriesId = :seriesId';
+            r.seriesId = :seriesId
+        ORDER BY
+            r.name DESC';
 
         return $this->dbConn->fetchAll(
             $query,
