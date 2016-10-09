@@ -147,7 +147,7 @@ class Race
         AND
             r.isPublished = 1
         ORDER BY
-            r.date DESC';
+            r.date DESC, r.name DESC';
 
         return $this->dbConn->fetchAll(
             $query,
