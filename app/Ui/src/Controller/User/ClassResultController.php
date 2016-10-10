@@ -29,6 +29,7 @@ class ClassResultController
 
     public function index($raceId)
     {
+        syslog(LOG_INFO, json_encode(['type' => 'ClassRaceView', 'raceId' => $raceId]));
         $errors = $this->getAndUnsetErrors();
         $message = $this->getAndUnsetMessages();
 

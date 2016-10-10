@@ -22,6 +22,7 @@ class HomeController
 
     public function index($seriesId = null)
     {
+        syslog(LOG_INFO, json_encode(['type' => 'HomeView']));
         $errors = $this->getAndUnsetErrors();
         $message = $this->getAndUnsetMessages();
 

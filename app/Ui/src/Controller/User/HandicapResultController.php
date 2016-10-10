@@ -29,6 +29,7 @@ class HandicapResultController
 
     public function index($raceId)
     {
+        syslog(LOG_INFO, json_encode(['type' => 'HandicapRaceView', 'raceId' => $raceId]));
         $errors = $this->getAndUnsetErrors();
         $message = $this->getAndUnsetMessages();
 
