@@ -29,7 +29,7 @@ class Series
             ON
                 s.seriesId = sf.seriesId
             ORDER BY
-                startDate DESC, seriesName';
+                s.startDate DESC, s.seriesName';
 
         return $this->dbConn->fetchAll($query);
     }
