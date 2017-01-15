@@ -15,5 +15,11 @@ class GenerateSeriesCommand extends Command
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $output->writeln('Generating league tables');
+        //get all races in a series
+        //for each race, get each competitor's result
+        //Fill these into a table
+        //use runtime calculations for scoring
+        //
+        //Also could queue small changes so they can update rather than regen everything
     }
 }
