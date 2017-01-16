@@ -11,12 +11,14 @@ class Handicap
     private $handicapResultDal;
     private $unfinishedResultDal;
     private $raceDal;
+    private $calculator;
 
-    public function __construct(HandicapResult $handicapResultDal, UnfinishedResult $unfinishedResultDal, Race $raceDal)
+    public function __construct(HandicapResult $handicapResultDal, UnfinishedResult $unfinishedResultDal, Race $raceDal, PyResultCalculator $calculator)
     {
         $this->handicapResultDal = $handicapResultDal;
         $this->unfinishedResultDal = $unfinishedResultDal;
         $this->raceDal = $raceDal;
+        $this->calculator = $calculator;
     }
 
     public function getRawResults($raceId)
@@ -30,11 +32,7 @@ class Handicap
         $results = $this->handicapResultDal->getByRace($raceId);
         $race = $this->raceDal->get($raceId);
         foreach ($results as &$result) {
-            if (!$result['crew'] && $result['boatClassPersons'] > 1) {
-                $result['pyNumber'] -= 20;
-            }
-            $timeAfterLaps = round(bcmul(bcdiv($result['time'], $result['laps'], 5), $race['laps'], 5));
-            $result['correctedTime'] = round(bcdiv(bcmul($timeAfterLaps, 1000, 5), $result['pyNumber'], 5));
+            $result['correctedTime'] = $this->calculator->calculateTime($result, $race);
         }
         unset($result);
         usort($results, function ($a, $b) {

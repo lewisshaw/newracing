@@ -63,7 +63,7 @@ class HandicapResult
             $result['helm'] = $this->resultCompetitor->getCompetitorByResult($result['resultId'], 'HELM');
             $result['crew'] = $this->resultCompetitor->getCompetitorByResult($result['resultId'], 'CREW');
             if (!$result['crew']) {
-                $result['crew'] = '';
+                $result['crew'] = [];
             }
         }
 

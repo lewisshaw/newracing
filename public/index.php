@@ -30,3 +30,5 @@ foreach ($routes as $route => $provider) {
 }
 
 $app->run();
+
+return $app;

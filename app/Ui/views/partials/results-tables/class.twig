@@ -7,10 +7,10 @@
   <tbody>
 {% for result in results %}
 <tr>
-    <td>{{ result.position }} {{ result.unfinishedTypeHandle is defined ? '(' ~ result.unfinishedTypeHandle ~ ')' : '' }} </td> <td>{{ result.sailNumber }}</td> <td>{{ result.helm }}</td>
+    <td>{{ result.position }} {{ result.unfinishedTypeHandle is defined ? '(' ~ result.unfinishedTypeHandle ~ ')' : '' }} </td> <td>{{ result.sailNumber }}</td> <td>{{ result.helm.fullName }}</td>
     <td>
       {% if result.crew|length > 0 %}
-        {{ result.crew }}
+        {{ result.crew.fullName }}
       {%else %}
         No Crew
       {% endif %}

@@ -38,7 +38,7 @@ class Result implements ServiceProviderInterface
         });
 
         $app['results.handicap'] = $app->share(function () use ($app) {
-            return new \Racing\Results\Handicap($app['handicapresult.dal'], $app['unfinishedresult.dal'], $app['race.dal']);
+            return new \Racing\Results\Handicap($app['handicapresult.dal'], $app['unfinishedresult.dal'], $app['race.dal'], $app['py.result.calculator']);
         });
 
         $app['results.class'] = $app->share(function () use ($app) {
@@ -62,6 +62,23 @@ class Result implements ServiceProviderInterface
                 $app['results.class'],
                 $app['unfinishedresult.dal'],
                 $app['db']);
+        });
+
+        $app['py.result.calculator'] = $app->share(function () use ($app) {
+            return new \Racing\Results\PyResultCalculator();
+        });
+
+        $app['results.series.handicap'] = $app->share(function () use ($app) {
+            return new \Racing\Results\SeriesHandicap(
+                $app['results.handicap'],
+                $app['race.dal']
+            );
+        });
+
+        $app['results.cli.series.processor'] = $app->share(function () use ($app) {
+            return new \RacingCli\Series\Processor(
+                $app['results.series.handicap']
+            );
         });
     }
 

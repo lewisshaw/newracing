@@ -43,7 +43,8 @@ class ResultCompetitor
     {
         $query = '
             SELECT
-                CONCAT(firstName, \' \', lastName)
+                c.competitorId,
+                CONCAT(firstName, \' \', lastName) AS fullName
             FROM
                 Racing.ResultCompetitor AS rc
             INNER JOIN
@@ -59,13 +60,12 @@ class ResultCompetitor
             AND
                 ct.competitorTypeHandle = :competitorTypeHandle';
 
-        return $this->dbConn->fetchColumn(
+        return $this->dbConn->fetchAssoc(
             $query,
             [
                 ':resultId' => $resultId,
                 ':competitorTypeHandle' => $competitorTypeHandle,
             ],
-            0,
             [
                 ':resultId' => \PDO::PARAM_INT,
                 ':competitorTypeHandle' => \PDO::PARAM_STR,
