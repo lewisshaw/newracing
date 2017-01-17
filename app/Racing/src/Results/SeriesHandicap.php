@@ -21,7 +21,7 @@ class SeriesHandicap implements SeriesResultProviderInterface
         foreach ($races as $race) {
            $results[$race['raceId']] = $this->handicapResults->getSortedResults($race['raceId']); 
         }
-        var_dump($results);
-        exit;
+
+        return $results;
     }
 }

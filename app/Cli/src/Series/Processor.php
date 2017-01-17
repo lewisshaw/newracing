@@ -2,6 +2,7 @@
 namespace RacingCli\Series;
 
 use Racing\Results\SeriesResultProviderInterface;
+use Racing\Dal\SeriesResult;
 
 class Processor
 {
@@ -9,17 +10,20 @@ class Processor
     private $seriesResultDal;
     private $seriesProvider;
 
-    public function __construct(SeriesResultProviderInterface $seriesProvider)
-    {
+    public function __construct(
+        SeriesResultProviderInterface $seriesProvider,
+        SeriesResult $seriesResultDal
+    ) {
         //$this->updateDal       = $updateDal;
-        //$this->seriesResultDal = $seriesResultDal;
+        $this->seriesResultDal = $seriesResultDal;
         $this->seriesProvider = $seriesProvider;
     }
 
     public function process()
     {
-        $seriesToGenerate = $this->updateDal->getSeriesToGenerate();
+        //$seriesToGenerate = $this->updateDal->getSeriesToGenerate();
 
+        $seriesToGenerate = [9];
         foreach ($seriesToGenerate as $seriesId) {
             $this->generateSeries($seriesId);
         }
@@ -28,15 +32,15 @@ class Processor
     private function generateSeries(int $seriesId)
     {
         $races = $this->getRaceResults($seriesId);
-        var_dump($races);
-        exit;
-        foreach ($races as $raceId => $results) {
-            $helmId = 1;
+        $this->seriesResultDal->deleteResults($seriesId);
+        foreach ($races as $raceResults) {
+            $race = $raceResults->getRace();
+            $results = $raceResults->getResults();
             foreach ($results as $result) {
                 $this->seriesResultDal->addResult(
                     $seriesId,
-                    $raceId,
-                    $helmId,
+                    $race['raceId'],
+                    $result['helm']['competitorId'],
                     $result['sailNumber'],
                     $result['position']
                 );
@@ -46,6 +50,6 @@ class Processor
 
     private function getRaceResults(int $seriesId)
     {
-        return $this->seriesResults->getBySeries($seriesId);
+        return $this->seriesProvider->getBySeries($seriesId);
     }
 }

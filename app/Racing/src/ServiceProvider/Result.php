@@ -33,6 +33,10 @@ class Result implements ServiceProviderInterface
             return new \Racing\Dal\Result($app['db']);
         });
 
+        $app['result.dal.seriesresult'] = $app->share(function () use ($app) {
+            return new \Racing\Dal\SeriesResult($app['db']);
+        });
+
         $app['unfinishedresult.validator'] = $app->share(function () use ($app) {
             return new \RacingUi\Validator\UnfinishedResult($app['validator']);
         });
@@ -77,7 +81,8 @@ class Result implements ServiceProviderInterface
 
         $app['results.cli.series.processor'] = $app->share(function () use ($app) {
             return new \RacingCli\Series\Processor(
-                $app['results.series.handicap']
+                $app['results.series.handicap'],
+                $app['result.dal.seriesresult']
             );
         });
     }

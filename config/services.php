@@ -40,4 +40,5 @@ return [
     'Racing\ServiceProvider\Twig' => [],
     'Racing\ServiceProvider\User' => [],
     'Racing\ServiceProvider\Url' => [],
+    'RacingCli\ServiceProvider\ConsoleServiceProvider' => [],
 ];
