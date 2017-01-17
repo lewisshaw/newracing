@@ -43,4 +43,22 @@ class SeriesResult
             ]
         );
     }
+
+    public function getResults(int $seriesId)
+    {
+        $query = '
+            SELECT sr.seriesId, sr.raceId, sr.competitorId, sr.sailNumber, sr.position, c.firstName, c.lastName
+            FROM Racing.SeriesResult as sr
+            INNER JOIN Racing.Competitor as c on sr.competitorId = c.competitorId
+            WHERE sr.seriesId = :seriesId';
+
+        $results = $this->conn->fetchAll($query, [':seriesId' => $seriesId]);
+
+        $formattedResults = [];
+        foreach ($results as $result) {
+            $formattedResults[$result['competitorId']][$result['raceId']] = $result;
+        }
+
+        return $formattedResults;
+    }
 }

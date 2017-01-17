@@ -19,6 +19,10 @@ class User implements ServiceProviderInterface
         $app['user.class.controller'] = $app->share(function () use ($app) {
             return new \RacingUi\Controller\User\ClassResultController($app['twig'], $app, $app['results.class']);
         });
+
+        $app['user.seriestable.controller'] = $app->share(function () use ($app) {
+            return new \RacingUi\Controller\User\SeriesTableController($app['twig'], $app['result.dal.seriesresult'], $app['race.dal']);
+        });
     }
 
     public function boot(Application $app)
